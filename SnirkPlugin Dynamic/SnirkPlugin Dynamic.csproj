@@ -56,6 +56,8 @@
     <Compile Include="Commands\ModminCommands.cs" />
     <Compile Include="Commands\PointargsCommands.cs" />
     <Compile Include="Commands\UserPoint.cs" />
+    <Compile Include="Config\ConfigFile.cs" />
+    <Compile Include="Config\GeneralConfig.cs" />
     <Compile Include="DynamicPlugin.cs" />
     <Compile Include="ModminData.cs" />
     <Compile Include="Commands\AdminCommands.cs" />
@@ -68,11 +70,11 @@
     <Compile Include="Utils\General Utils.cs" />
     <Compile Include="Utils\Info.cs" />
     <Compile Include="Utils\Logging.cs" />
+    <Compile Include="Utils\Parsing.cs" />
     <Compile Include="Utils\Paths.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Advanced\" />
-    <Folder Include="Config\" />
     <Folder Include="Testing\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

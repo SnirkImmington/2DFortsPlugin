@@ -37,9 +37,20 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public Point SpawnPoint;
 
+        /// <summary>
+        /// The old name of the player.
+        /// </summary>
         public string OldName { get; private set; }
 
+        /// <summary>
+        /// Whether the player is renamed.
+        /// </summary>
         public bool IsRenamed { get { return Player.name == OldName; } }
+
+        /// <summary>
+        /// Whether the player is pig-latined
+        /// </summary>
+        public bool IsPigLatined;
 
         #endregion
 
@@ -88,7 +99,16 @@ namespace SnirkPlugin_Dynamic
             // If player data or user data should be saved, save them
         }
 
-        public PlayerData(int index)
+        public void Rename(string newName, string source)
+        {
+            // Just change the name
+            if (IsRenamed)
+            {
+
+            }
+        }
+
+        public PlayerData(int index, bool startupAdd)
         {
             Index = index;
 
