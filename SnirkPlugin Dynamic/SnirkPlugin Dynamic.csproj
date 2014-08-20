@@ -57,7 +57,6 @@
     <Compile Include="Commands\PointargsCommands.cs" />
     <Compile Include="Commands\UserPoint.cs" />
     <Compile Include="Config\Commands Config.cs" />
-    <Compile Include="Config\ConfigFile.cs" />
     <Compile Include="Config\GeneralConfig.cs" />
     <Compile Include="DynamicPlugin.cs" />
     <Compile Include="Player Data\ModminData.cs" />
