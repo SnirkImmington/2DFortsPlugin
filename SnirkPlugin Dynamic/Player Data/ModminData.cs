@@ -72,11 +72,22 @@ namespace SnirkPlugin_Dynamic
                 !PluginInfo | !ModminChat | PluginTracing;
         }
     
+        /// <summary>
+        /// Basic constructor: initialize to default values.
+        /// </summary>
         public ModminData()
         {
+            // Saved
+            PluginTracing = WelcomeMessage = PlayerJoinInfo = SeeOnGC = false;
+            PluginInfo = true;
 
+            // Non-saved
+            AutoLog = Indetectable = false;
         }
 
+        /// <summary>
+        /// Constructor from the database.
+        /// </summary>
         public ModminData(bool plugin, bool welcome, bool modmin, bool tracing, bool playerJoin, bool gcSee) : this()
         {
             PluginInfo = plugin; WelcomeMessage = welcome; ModminChat = modmin; PluginTracing = tracing;

@@ -36,7 +36,7 @@ namespace SnirkPlugin_Dynamic
         /// <param name="startup"></param>
         public static void Init(bool startup)
         {
-            // Initialize Variables
+            #region Initialize Variables
             Players = new PlayerData[Main.maxPlayers];
 
             // Check for existing players
@@ -45,9 +45,11 @@ namespace SnirkPlugin_Dynamic
                     if (Main.player[i] != null)
                         Players[i] = new PlayerData(i, false);
 
+            #endregion
+
             // Initialize a timer? wait till world load.
 
-            // Initialize modules
+            #region Initialize modules
 
             // Paths
             try
@@ -62,8 +64,12 @@ namespace SnirkPlugin_Dynamic
             { Logs.Init(startup); }
             catch (Exception ex)
             { throw new ApplicationException("Logs failed while trying to start up!", ex); }
-        
 
+            #endregion
+
+
+
+            InitFinished = true;
         }
 
         public static void Dispose(bool startup)

@@ -9,13 +9,26 @@ namespace SnirkPlugin_Dynamic
 {
     static class Paths
     {
+        /// <summary>
+        /// The folder where the plugin itself is stored on dropbox - Al vs Snirk\Plugin\
+        /// </summary>
         public static string DynamicPluginFolder { get; private set; }
-
+        /// <summary>
+        /// The "Al vs Snirk" folder on dropbox.
+        /// </summary>
         public static string DropboxAlVsSnirkFolder { get; private set; }
-
+        /// <summary>
+        /// The config folder - Al vs Snirk\Configuration\
+        /// </summary>
         public static string ConfigsFolder { get; private set; }
-
+        /// <summary>
+        /// The logs folder - Al vs Snirk\Logs\
+        /// </summary>
         public static string LogsFolder { get; private set; }
+        /// <summary>
+        /// The trace folder - Al vs Snirk\Trace\
+        /// </summary>
+        public static string TraceFolder { get; private set; }
 
         /// <summary>
         /// Reads data from dropbox config and sets paths appropriately.
@@ -32,6 +45,7 @@ namespace SnirkPlugin_Dynamic
                 DynamicPluginFolder = DropboxAlVsSnirkFolder + "Plugin\\";
                 ConfigsFolder = DropboxAlVsSnirkFolder + "Configuration\\";
                 LogsFolder = DropboxAlVsSnirkFolder + "Logs\\";
+                TraceFolder = DropboxAlVsSnirkFolder + "Trace\\";
             }
             // Parsing the
             catch (Exception ex)

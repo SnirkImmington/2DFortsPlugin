@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Advanced\" />
+    <Folder Include="Database\" />
     <Folder Include="Player Ranking\" />
     <Folder Include="Statistics\" />
     <Folder Include="Testing\" />

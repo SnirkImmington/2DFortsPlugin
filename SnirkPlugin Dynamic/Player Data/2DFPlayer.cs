@@ -90,6 +90,12 @@ namespace SnirkPlugin_Dynamic
 
         #endregion
 
+        #region Log in/out
+
+        /// <summary>
+        /// Logs in the player data - reads
+        /// persistant info from the database.
+        /// </summary>
         public void LogIn()
         {
             // If player is mod, get the mod data or create a new one
@@ -97,13 +103,33 @@ namespace SnirkPlugin_Dynamic
             // Get the possible player data or create a new one
         }
 
+        /// <summary>
+        /// Logs out the player data - saves things.
+        /// </summary>
         public void LogOut()
         {
             // If player is mod, save the mod data
+            if (Modmin != null && Modmin.ShouldSave())
+            {
+
+            }
 
             // If player data or user data should be saved, save them
+            if (UserData.ShouldSave())
+            {
+
+            }
         }
 
+        #endregion
+
+        #region Util Methods
+
+        /// <summary>
+        /// Renames the player.
+        /// </summary>
+        /// <param name="newName">The new name to give</param>
+        /// <param name="source">The name of the renamer for logs.</param>
         public void Rename(string newName, string source)
         {
             // Just change the name
@@ -129,7 +155,7 @@ namespace SnirkPlugin_Dynamic
         {
             switch (type)
             {
-                case LogType.General: return TSPlayer.DisplayLogs ? Modmin.PluginInfo;
+                case LogType.General: return TSPlayer.DisplayLogs ? Modmin.PluginInfo : false;
                 case LogType.Trace: return Modmin.PluginTracing;
                 case LogType.Important: return true;
                 default: return true;
@@ -137,11 +163,19 @@ namespace SnirkPlugin_Dynamic
 
         }
 
+        #endregion
+
+        /// <summary>
+        /// Updates the player every second.
+        /// </summary>
         public void OnSecond()
         {
 
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public PlayerData(int index, bool startupAdd)
         {
             Index = index;
