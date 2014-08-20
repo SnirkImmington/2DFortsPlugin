@@ -30,7 +30,11 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public static bool InitFinished = false;
 
-        public static void Initialize(bool startup)
+        /// <summary>
+        /// "Main" method called reflectively.
+        /// </summary>
+        /// <param name="startup"></param>
+        public static void Init(bool startup)
         {
             // Initialize Variables
             Players = new PlayerData[Main.maxPlayers];
@@ -69,6 +73,11 @@ namespace SnirkPlugin_Dynamic
 
         #region Events
 
+        private static void OnJoin(JoinEventArgs args)
+        {
+            
+        }
+
         private static void OnChat(ServerChatEventArgs e)
         {
             if (e.Text.StartsWith("/login") || TShock.Players[e.Who].mute ||
@@ -79,16 +88,14 @@ namespace SnirkPlugin_Dynamic
             #region Command Check
             if (e.Text[0] == '/')
             {
-                var com = e.Text.Substring(1).TakeWhile(c => c != '"' && c != ' ');
+                //var com = e.Text.Substring(1).TakeWhile(c => c != '"' && c != ' ');
 
-
-
-                if (ply.UserData.IsNoCommandMode)
+                if (ply.UserData.NoCommands)
                 {
                     e.Handled = true;
                     ply.TSPlayer.SendErrorMessage("You are not allowed to use commands right now!"); return;
                 }
-                if (ply.UserData.PreventedCommands.Any(p => e.Text.Substring(1).StartsWith(p)))
+                if (ply.UserData.BannedCommands.Any(p => e.Text.Substring(1).StartsWith(p)))
                 {
                     e.Handled = true;
                     ply.TSPlayer.SendErrorMessage("You are not allowed to use that command right now!"); return;
@@ -98,21 +105,26 @@ namespace SnirkPlugin_Dynamic
 
             #region Igpay Atinlay
 
-            else if (ply.IsPigLatined) // text isn't command :)
+            else if (ply.IsPigLatined) // and text isn't command 
             {
-                var words = e.Text.Split(' ');
+                // Split the text into words: each should be at least one char in length.
+                var words = e.Text.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
                 if (words.Length != 0)
                 {
-                    foreach (var word in words)
+                    for (int i = 0; i < words.Length; i++)
                     {
-                        if (word.Length > 1)
-                        {
+                        // Get the first letter and rest of word.
+                        var firstLetter = words[i][0];
+                        var restOfWord = words[i].Length == 1 ? "" : words[i].Substring(1);
 
-                        }
+                        // TODO capitalization
+
+                        // Change the word to pig latin
+                        words[i] = restOfWord + firstLetter +
+                            (Utils.Vowels.IndexOf(firstLetter) == -1 ? "ay" : "way");
                     }
 
-
-
+                    // Reflectively change the text property.
                     e.GetType().GetProperty("Text").GetSetMethod(true).Invoke(e.Text, new object[] { string.Join(" ", words) });
                 }
             }
@@ -120,7 +132,8 @@ namespace SnirkPlugin_Dynamic
             #endregion
 
             #region Caps Lock
-            if (!ply.CanCaps && (e.Text[0] != '/' || e.Text.StartsWith("/me") ||
+
+            if (ply.PlayerData.NoCaps && (e.Text[0] != '/' || e.Text.StartsWith("/me") ||
                 e.Text.StartsWith("/r") || e.Text.StartsWith("/w")))
             {
                 var words = e.Text.ToLower().Split(' ');
@@ -133,27 +146,28 @@ namespace SnirkPlugin_Dynamic
                         if (words[i - 1].Last() == '.' || words[i - 1].Last() == '!')
                             words[i] = char.ToUpper(words[i][0]) + words[i].Substring(1);
                 }
-                // Yea I'm gonna reflect around your work, big whoop.
+                // Reflectively change the text
                 e.GetType().GetProperty("Text").GetSetMethod(true).Invoke(e.Text, new object[] { string.Join(" ", words) });
             }
+
             #endregion
 
-            // Twisted mod string detect?
-
             #region Auto staff chats
-            if (ply.AdminData.AutoLog && e.Text[0] != '/')
+
+            // Auto-log and not command
+            if (ply.Modmin.AutoLog && e.Text[0] != '/')
             {
-                e.Handled = true; Logs.StaffChat(false, "{0}: {1}".SFormat(ply.Player.name, e.Text)); return;
+                e.Handled = true; Logs.StaffChat(false, "[/l]{0}: {1}".SFormat(ply.Player.name, e.Text)); return;
             }
-            if (ply.AdminData.AutoGCGroup != null && e.Text[0] != '/')
+            // Autogc and not command
+            if (ply.Modmin.AutoGCGroup != null && e.Text[0] != '/')
             {
                 e.Handled = true;
 
-                // TODO have testing things
-
-                TSPlayer.All.SendMessage(string.Format(TShock.Config.ChatFormat, ply.AdminData.AutoGCGroup.Name, ply.AdminData.AutoGCGroup.Prefix, ply.Player.name,
-                    ply.AdminData.AutoGCGroup.Suffix, e.Text), ply.AdminData.AutoGCGroup.R, ply.AdminData.AutoGCGroup.G, ply.AdminData.AutoGCGroup.B); return;
+                TSPlayer.All.SendMessage(string.Format(TShock.Config.ChatFormat, ply.Modmin.AutoGCGroup.Name, ply.Modmin.AutoGCGroup.Prefix, ply.Player.name,
+                    ply.Modmin.AutoGCGroup.Suffix, e.Text), ply.Modmin.AutoGCGroup.R, ply.Modmin.AutoGCGroup.G, ply.Modmin.AutoGCGroup.B); return;
             }
+
             #endregion
         }
 

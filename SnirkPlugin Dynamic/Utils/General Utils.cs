@@ -26,5 +26,7 @@ namespace SnirkPlugin_Dynamic
         /// Gets the time at which the plugin was started.
         /// </summary>
         public static DateTime StartTime { get { return System.Diagnostics.Process.GetCurrentProcess().StartTime; } }
+
+        public const string Vowels = "AEIOUaeiou";
     }
 }

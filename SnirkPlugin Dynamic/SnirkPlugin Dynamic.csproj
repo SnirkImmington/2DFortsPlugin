@@ -51,18 +51,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="2DFPlayer.cs" />
+    <Compile Include="Player Data\2DFPlayer.cs" />
     <Compile Include="Commands\GeneralCommands.cs" />
     <Compile Include="Commands\ModminCommands.cs" />
     <Compile Include="Commands\PointargsCommands.cs" />
     <Compile Include="Commands\UserPoint.cs" />
+    <Compile Include="Config\Commands Config.cs" />
     <Compile Include="Config\ConfigFile.cs" />
     <Compile Include="Config\GeneralConfig.cs" />
     <Compile Include="DynamicPlugin.cs" />
-    <Compile Include="ModminData.cs" />
+    <Compile Include="Player Data\ModminData.cs" />
     <Compile Include="Commands\AdminCommands.cs" />
     <Compile Include="DynamicMain.cs" />
-    <Compile Include="PersistantData.cs" />
+    <Compile Include="Player Data\PersistantData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\Attributes.cs" />
     <Compile Include="Utils\Command Utils.cs" />
@@ -75,6 +76,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Advanced\" />
+    <Folder Include="Player Ranking\" />
+    <Folder Include="Statistics\" />
     <Folder Include="Testing\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

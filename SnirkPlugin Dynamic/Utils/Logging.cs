@@ -43,18 +43,14 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         /// <param name="admin">Whether to only tell admins.</param>
         /// <param name="text">The text to send.</param>
-        public static void StaffRaw(bool admin, string text, Color color)
+        public static void StaffRaw(bool admin, string text, Color color, LogType type)
         {
             for (int i = 0; i < DynamicMain.Players.Length; i++)
                 if (DynamicMain.Players[i] != null
-                    && DynamicMain.Players[i].IsStaff(admin))
+                    && DynamicMain.Players[i].IsStaff(admin) && DynamicMain.Players[i].AcceptsLog(type))
                     DynamicMain.Players[i].TSPlayer.SendMessage(text, color);
             
-            try
-            {
-                TShockAPI.Log.ConsoleInfo(text);
-            }
-            catch { }
+            TShockAPI.Log.ConsoleInfo(text);
         }
         /// <summary>
         /// Sends text to staff with "[NTG Plugin]" on server and logs it.
@@ -62,9 +58,9 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         /// <param name="admin">Whether to only tell admins.</param>
         /// <param name="text">The text to send.</param>
-        public static void StaffPlugin(bool admin, string text)
+        public static void StaffPlugin(bool admin, string text, LogType type = LogType.General)
         {
-            StaffRaw(admin, "[NTG Plugin]: " + text, GeneralConfig.StandardLogsColor);
+            StaffRaw(admin, "[Snirk Plugin]: " + text, GeneralConfig.StandardLogsColor, type);
         }
         /// <summary>
         /// Sends text to staff on server with "[Staffchat]" and logs it.
@@ -72,9 +68,9 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         /// <param name="admin">Whether to only tell admins.</param>
         /// <param name="text">The text to send.</param>
-        public static void StaffChat(bool admin, string text)
+        public static void StaffChat(bool admin, string text, LogType type = LogType.General)
         {
-            StaffRaw(admin, "[Staffchat]: " + text, GeneralConfig.StandardLogsColor);
+            StaffRaw(admin, "[Staffchat]: " + text, GeneralConfig.StandardLogsColor, type);
         }
 
         #endregion
@@ -151,9 +147,9 @@ namespace SnirkPlugin_Dynamic
         /// <summary>
         /// Sends message to admins, console and logs.
         /// </summary>
-        public static Task AllRaw(string message, bool admin = false)
+        public static Task AllRaw(string message, bool admin = false, LogType type = LogType.General)
         {
-            StaffRaw(admin, message, GeneralConfig.StandardLogsColor); 
+            StaffRaw(admin, message, GeneralConfig.StandardLogsColor, type); 
             return Data(message);
         }
 
@@ -161,34 +157,21 @@ namespace SnirkPlugin_Dynamic
     }
 
     /// <summary>
-    /// Logging level for admins - 
+    /// What kind of log are we talking about here
     /// </summary>
-    enum LogLevel
+    enum LogType
     {
         /// <summary>
-        /// The basic level of logging: global messages that everyone can see
+        /// A general log: can be found on most trees
         /// </summary>
         General = 0,
         /// <summary>
-        /// Viewing modmin chats with /l and others.
-        /// Also includes important admin warnings from the plugin
+        /// An important log: just the best kind
         /// </summary>
-        ModminChat,
+        Important,
         /// <summary>
-        /// Notifications from the plugin about players who are violating damage caps.
+        /// Trace: a log that's just laying on the ground, the perfect habitat for many
         /// </summary>
-        SeverePlayers,
-        /// <summary>
-        /// Logs from commands, disabled with /displaylogs
-        /// </summary>
-        CommandLogs,
-        /// <summary>
-        /// Data from the plugin - loading and saving the configuration, etc.
-        /// </summary>
-        PluginHappenings,
-        /// <summary>
-        /// Tracing from the plugin - beginning/closing things, stuff that only Snirk wants to see.
-        /// </summary>
-        PluginTracing
+        Trace
     }
 }

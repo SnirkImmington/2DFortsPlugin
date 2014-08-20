@@ -90,20 +90,6 @@ namespace SnirkPlugin_Dynamic
                 default: return b ? "True" : "False";
             }
         }
-        /// <summary>
-        /// Pluralizes a string with a count.
-        /// </summary>
-        public static string Plural(this string input, int count = 2)
-        {
-            if (count == 1) return input;
-            switch (input.Last())
-            {
-                case 's':
-                    return input + "es";
-
-                default: return input + 's';
-            }
-        }
 
         // Points
 
@@ -220,6 +206,14 @@ namespace SnirkPlugin_Dynamic
             return string.Format("{0}; {1}; {2}; {3}; {4};", alterStep, createStep, moveStep, defaultStep, deleteStep);
         }
         
+        /// <summary>
+        /// Returns a random element from an array. Calling this multiple times in a row is a bad idea.
+        /// </summary>
+        public static T GetRandom<T>(this T[] array)
+        {
+            return array[(new Random()).Next(array.Length)];
+        }
+
         #endregion
 
         #region Gender Strings

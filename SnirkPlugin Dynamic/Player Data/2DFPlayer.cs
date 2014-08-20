@@ -52,6 +52,11 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public bool IsPigLatined;
 
+        /// <summary>
+        /// A list of permabuffs for the player.
+        /// </summary>
+        public List<int> Permabuffs;
+
         #endregion
 
         #region Utility
@@ -62,8 +67,8 @@ namespace SnirkPlugin_Dynamic
         /// <param name="onlyAdmin">Whether to disclude moderators from the query.</param>
         public bool IsStaff(bool onlyAdmin = false)
         {
-            if (onlyAdmin) return TSPlayer.Group.HasPermission("2dforts.admin");
-            return TSPlayer.Group.HasPermission("2dforts.mod") || TSPlayer.Group.HasPermission("2dforts.admin");
+            if (onlyAdmin) return TSPlayer.Group.HasPermission(ComUtils.AdminPermission);
+            return TSPlayer.Group.HasPermission(ComUtils.ModPermission) || TSPlayer.Group.HasPermission(ComUtils.AdminPermission);
         }
 
         #endregion
@@ -104,8 +109,37 @@ namespace SnirkPlugin_Dynamic
             // Just change the name
             if (IsRenamed)
             {
-
+                OldName = Player.name;
+                Logs.ConsoleData("Rename - {0} was renamed to {1} by {2}.", Player.name, newName, source);
+                Player.name = newName;
             }
+            else 
+            {
+                Logs.ConsoleData("Rename - {0} (originally {1}) was renamed to {2} by {3}", Player.name, OldName, newName, source);
+                Player.name = newName;
+            }
+        }
+
+        /// <summary>
+        /// If the specific type of message should be sent.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public bool AcceptsLog(LogType type)
+        {
+            switch (type)
+            {
+                case LogType.General: return TSPlayer.DisplayLogs ? Modmin.PluginInfo;
+                case LogType.Trace: return Modmin.PluginTracing;
+                case LogType.Important: return true;
+                default: return true;
+            }
+
+        }
+
+        public void OnSecond()
+        {
+
         }
 
         public PlayerData(int index, bool startupAdd)

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace SnirkPlugin_Dynamic.Commands
 {
-    class PointargsCommands
+    static class PointargsCommands
     {
+        // tpnear
+
+
     }
 }

@@ -14,6 +14,53 @@ namespace SnirkPlugin_Dynamic
     static class ComUtils
     {
         /// <summary>
+        /// Permission for moderator groups - 2dforts.mod
+        /// </summary>
+        public const string ModPermission = "2dforts.mod";
+        /// <summary>
+        /// Permission for admin groups - 2dforts.admin
+        /// </summary>
+        public const string AdminPermission = "2dforts.admin";
+
+        /// <summary>
+        /// An array of messages for /facepalm.
+        /// </summary>
+        #region public const string[] FacepalmMessages
+        public const string[] FacepalmMessages =
+        {
+            // {0} = him/herself, {1} = s/he, {2} = him/her
+            "facepalmed with the force of a thousand suns.",
+            "facepalmed with the force of a thousand suns.",
+
+            "facepalmed with the force of two thousand suns.",
+            "facepalmed with the force of three thousand suns.",
+            "facepalmed with the force of a supernova.",
+            "facepalmed with the force of a nuclear explosion.",
+            "facepalmed with the force of a sharknado.",
+            "facepalmed with the force of something really forceful.",
+            "facepalmed with something something it's OVER NINE THOUSAND1!11!",
+            "facepalmed with the force of like twenty-two tohusand billion explosions, man.",
+
+            "used /facepalm.",
+            "facepalmed.",
+            "needs to calm down about things.",
+            "needs to find a better way to vent {2} anger.",
+
+            "facepalmed {0} to death.",
+            "facepalmed {0} into oblivion.",
+            "facepalmed {0} so hard {1} exploded.",
+
+            "was eviscerated by facepalming.",
+            "was killed by facepalming.",
+            "was exploded by facepalming.",
+
+            "facepalmed - which is deadly here at 2DForts.",
+            "facepalmed while wearing really spiky gloves or something.",
+            "facepalmed {0} the cold, cold ground."
+        };
+        #endregion
+
+        /// <summary>
         /// Creates a gender-style string based on a player's gender.
         /// </summary>
         /// <param name="male">Whether the player is male</param>
