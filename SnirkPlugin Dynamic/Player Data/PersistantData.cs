@@ -48,17 +48,34 @@ namespace SnirkPlugin_Dynamic
         public List<string> BannedCommands;
 
         /// <summary>
+        /// If the user is completely disabled.
+        /// </summary>
+        public bool Disabled;
+
+        /// <summary>
+        /// If the user isn't allowed to talk in caps lock mode.
+        /// </summary>
+        public bool NoCaps;
+
+        /// <summary>
         /// If the data needs to be saved.
         /// </summary>
         /// <returns></returns>
         public bool ShouldSave()
         {
-            return NoCommands | BannedCommands.Count != 0;
+            return NoCommands | Disabled | BannedCommands.Count != 0;
         }
 
-        public UserPersistantData(bool commands, string[] bannedCom)
+        public UserPersistantData()
         {
-            NoCommands = commands; BannedCommands = new List<string>(bannedCom);
+            Disabled = NoCommands = false;
+            BannedCommands = new List<string>();
+        }
+
+        public UserPersistantData(bool commands, bool disabled, string[] bannedCom)
+        {
+            NoCommands = commands; Disabled = disabled;
+            BannedCommands = new List<string>(bannedCom);
         }
     }
 }

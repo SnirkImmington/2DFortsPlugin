@@ -19,5 +19,24 @@ namespace SnirkPlugin_Dynamic.Commands
                         ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.They),
                         ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.Their)), 9001);
         }
+
+        #region Donors only
+
+        [DonorCommand("")]
+        public static void Grep(CommandArgs com)
+        {
+            // Error/usage message.
+            if (com.Parameters.Count < 2 || com.Parameters[0] == "help")
+            {
+                com.Player.SendInfoMessage("\"grep\" is a Unix command for searching via regular expressions.");
+                com.Player.SendSuccessMessage("If you don't understand any of those words, don't worry and don't bother.");
+                com.Player.SendInfoMessage("Usage: /grep players|warps <match regex> - matches members of those groups by the match regex");
+                return;
+            }
+
+
+        }
+
+        #endregion
     }
 }
