@@ -21,11 +21,15 @@ namespace SnirkPlugin_Dynamic
         /// Permission for admin groups - 2dforts.admin
         /// </summary>
         public const string AdminPermission = "2dforts.admin";
+        /// <summary>
+        /// Permission used by all donor groups.
+        /// </summary>
+        public const string DonorPermission = "2dforts.donor";
 
         /// <summary>
         /// An array of messages for /facepalm.
         /// </summary>
-        #region public const string[] FacepalmMessages
+        #region public const string[] FacepalmMessages = new string[] { }
         public const string[] FacepalmMessages =
         {
             // {0} = him/herself, {1} = s/he, {2} = him/her
@@ -45,10 +49,15 @@ namespace SnirkPlugin_Dynamic
             "facepalmed.",
             "needs to calm down about things.",
             "needs to find a better way to vent {2} anger.",
+            "facepalmed really hard.",
+            "facepalmed with the skill of an assasin.",
 
             "facepalmed {0} to death.",
             "facepalmed {0} into oblivion.",
             "facepalmed {0} so hard {1} exploded.",
+            "facepalmed {0} so hard {1} was eviscerated.",
+            "facepalmed {0} so hard {1} blew up.",
+            "facepalmed {0} so hard it shook the world.",
 
             "was eviscerated by facepalming.",
             "was killed by facepalming.",
@@ -56,7 +65,7 @@ namespace SnirkPlugin_Dynamic
 
             "facepalmed - which is deadly here at 2DForts.",
             "facepalmed while wearing really spiky gloves or something.",
-            "facepalmed {0} the cold, cold ground."
+            "facepalmed {0} the cold, cold ground.",
         };
         #endregion
 
