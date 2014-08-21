@@ -54,6 +54,12 @@ namespace SnirkPlugin_Dynamic
         }
     }
 
+    class DonorCommandAtribute : BaseCommandAttribute
+    {
+        public DonorCommandAtribute(string description, params string[] names)
+            : base(ComUtils.DonorPermission, description, names) { }
+    }
+
     /// <summary>
     /// Describes a command to give the default administrator permission, "2DForts.admin".
     /// </summary>
@@ -65,7 +71,8 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         /// <param name="description">The description of the command</param>
         /// <param name="names">The names of the command</param>
-        public AdminCommandAttribute(string description, params string[] names) : base(ComUtils.AdminPermission, description, names) { }
+        public AdminCommandAttribute(string description, params string[] names) 
+            : base(ComUtils.AdminPermission, description, names) { }
     }
 
     /// <summary>
@@ -79,6 +86,7 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         /// <param name="description">The description of the command</param>
         /// <param name="names">The names of the command</param>
-        public ModCommandAttribute(string description, params string[] names) : base(ComUtils.ModPermission, description, names) { }
+        public ModCommandAttribute(string description, params string[] names) 
+            : base(ComUtils.ModPermission, description, names) { }
     }
 }
