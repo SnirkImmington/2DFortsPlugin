@@ -36,11 +36,19 @@ namespace SnirkPlugin_Dynamic
     {
         public T Value;
 
-        public int Index;
+        public int Matched;
+
+        public int EndIndex;
 
         public SmartInfo(T value, int index)
         {
-            Value = value; Index = index;
+            Value = value; EndIndex = index;
+            Matched = 1;
+        }
+
+        public SmartInfo(int matched)
+        {
+            Matched = matched;
         }
     }
 }
