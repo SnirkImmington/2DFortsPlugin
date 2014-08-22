@@ -19,7 +19,8 @@ namespace SnirkPlugin_Dynamic
             com.Player.Kill(Extensions.GetRandom(ComUtils.FacepalmMessages)
                 .SFormat(ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.Self),
                         ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.They),
-                        ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.Their)), 9001);
+                        ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.Their),
+                        ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.Them), 9001);
         }
 
         #region Donors only

@@ -50,17 +50,21 @@ namespace SnirkPlugin_Dynamic
         #region public const string[] FacepalmMessages = new string[] { }
         public const string[] FacepalmMessages =
         {
-            // {0} = him/herself, {1} = s/he, {2} = him/her
+            // {0} = him/herself, {1} = s/he, {2} = him/her, {3} = his/her
+            "facepalmed with the force of a thousand suns.",
             "facepalmed with the force of a thousand suns.",
             "facepalmed with the force of a thousand suns.",
 
             "facepalmed with the force of two thousand suns.",
             "facepalmed with the force of three thousand suns.",
+            "facepalmed with the force of over nine thousand suns.",
+
             "facepalmed with the force of a supernova.",
             "facepalmed with the force of a nuclear explosion.",
             "facepalmed with the force of a sharknado.",
             "facepalmed with the force of something really forceful.",
             "facepalmed with something something it's OVER NINE THOUSAND1!11!",
+
             "facepalmed with the force of like twenty-two tohusand billion explosions, man.",
             "facepalmed with the force of the asteriod that killed the dionsaurs.",
             "facepalmed with the force of a palm to the face. A deadly palm to the face.",
@@ -77,6 +81,7 @@ namespace SnirkPlugin_Dynamic
             "facepalmed! IT'S OVER NINE THOUUSAAAAAAAAND!!!!",
 
             "palmed {0} in the face.",
+            "facepalmed through {3} face.", // Tobled's idea
             "slapped {0} silly. In the face.",
             "like toatally faceplamed, dude.",
 
