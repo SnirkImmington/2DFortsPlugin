@@ -20,12 +20,19 @@ namespace SnirkPlugin_Dynamic
         /// <summary>
         /// The usage message to display if data cannot be acquired or params are wrong
         /// </summary>
-        public string Usage { get; private set; }
+        public string Usage { get; set; }
 
         /// <summary>
         /// The current index of the parser.
         /// </summary>
-        public int Index { get; private set; }
+        public int ParamIndex { get; private set; }
+
+        #region Parsing
+
+        // Idea: allow assimilation of strings directly
+        // and dynamically based on parsing methods
+        // to prevent the need for quotes and escaping.
+        //public int CharacterIndex { get; private set; }
 
         /// <summary>
         /// Parses an object given a function to create a list, and moves the index over
@@ -38,62 +45,131 @@ namespace SnirkPlugin_Dynamic
         /// <param name="finder">A function that returns a list of things from a string,
         /// for example a list of players from part of a name.</param>
         /// <returns>A parsed T or null.</returns>
+        /// <example>Parse(true, "item", TShock.Utils.GetItemByIdOrName)</example>
         public T Parse<T>(bool smart, string type, Func<string, List<T>> finder)
         {
             
         }
 
-        public T? Parse<T>(bool smart, string error, string type, Func<string, T> finder)
+        /// <summary>
+        /// Parses a T from a function designed to parse a T from a string and moves
+        /// the counter along the parameters.
+        /// <para>Sends error message if parsing failed.</para>
+        /// </summary>
+        /// <param name="smart">Whether to assimilate more arguments if the parse failed.</param>
+        /// <param name="error">The error message to give if the method didn't work</param>
+        /// <param name="finder">The function to invoke for parsing</param>
+        /// <returns>A parsed T or null if the function didn't work.</returns>
+        /// <example>Parse(false, "No number found", int.Parse)</example>
+        public T? Parse<T>(bool smart, string error, Func<string, T> finder)
         {
 
         }
 
-        public ParseResult<TSPlayer> ParsePlayer(bool smart = true)
+        /// <summary>
+        /// Parses a player from the current position.
+        /// </summary>
+        /// <param name="smart">Whether to keep moving forward if no player is found.</param>
+        /// <returns>A parsed player or null if none was found.</returns>
+        public TSPlayer ParsePlayer(bool smart = true)
         {
+            return Parse(smart, "player", TShock.Utils.FindPlayer);
         }
 
+        /// <summary>
+        /// Gets the next parameter in line and moves forward.
+        /// Returns "" and does not move if there are none left.
+        /// </summary>
+        /// <param name="sendUsage">Whether to send the usage message if none are left</param>
         public string PopParameter(bool sendUsage = true)
         {
-
+            if (com.Parameters.Count < ParamIndex)
+            {
+                if (sendUsage) SendUsage();
+                return "";
+            }
+            ParamIndex++;
+            return GetCurrent();
         }
 
+        #endregion
+
+        #region Scrolling
+
+        /// <summary>
+        /// Gets the argument at the current index.
+        /// </summary>
+        public string GetCurrent()
+        {
+            return com.Parameters[ParamIndex];
+        }
+
+        /// <summary>
+        /// Gets the next count params and string.Join(' ')s them.
+        /// </summary>
+        /// <param name="count">How many parameters to move</param>
+        /// <param name="errorUsage">Whether to send an error message with usage.</param>
         public string JoinNext(int count, bool errorUsage = false)
         {
 
         }
 
-        public string JoinTillEnd(bool errorUsage = false)
+        /// <summary>
+        /// Joins the rest of the arguments in the command.
+        /// </summary>
+        public string JoinTillEnd()
         {
 
         }
 
-        public bool Scroll(int resultIndex, bool errorUsage = true)
+        /// <summary>
+        /// Tries to skip to the next command.
+        /// Alternatively, see PopParameter() and GetCurrent() for string-applications.
+        /// </summary>
+        /// <param name="resultIndex"></param>
+        /// <param name="errorUsage"></param>
+        /// <returns></returns>
+        public bool ScrollToIndex(int resultIndex, bool errorUsage = true)
         {
             
         }
 
-        public bool ScrollCount(int paramCount, bool errorUsage = true)
+        /// <summary>
+        /// Scrolls the parser paramCounts forward.
+        /// </summary>
+        /// <param name="paramCount">The number of params to move forward</param>
+        /// <param name="errorUsage">Whether to send the usage message if it fails.</param>
+        public bool Scroll(int paramCount = 1, bool errorUsage = true)
         {
-
+            for (int i = 0; i <paramCount; i++)
+            {
+                var param = PopParameter(errorUsage);
+                if (param == "") return false;
+            }
+            return true;
         }
 
-        public void SendUsage()
+        #endregion
+
+        /// <summary>
+        /// Sends the usage error message to the player.
+        /// Allows for formatting the error message.
+        /// </summary>
+        public void SendUsage(params object[] args)
         {
-            com.Player.SendErrorMessage(Usage);
+            com.Player.SendErrorMessage(Usage, args);
         }
 
+        /// <summary>
+        /// Constructor with a usage message and comandargs to walk.
+        /// </summary>
+        /// <param name="usage">The message to be sent in some faulure cases.</param>
+        /// <param name="com">The CommandArgs to parse.</param>
         public CommandParser(string usage, CommandArgs com)
         {
             Usage = usage;
             this.com = com;
         }
 
-    }
-
-    class ParseResult<T>
-    {
-        public T Value;
-
-        public bool HasValue { get { return Value != null; } }
     }
 }
