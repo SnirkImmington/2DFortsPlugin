@@ -90,6 +90,11 @@ namespace SnirkPlugin_Dynamic
                     if (male) return "he";
                     return "she";
 
+                case GenderMode.Self:
+                    if (male) return "himself";
+                    return "herself";
+
+                // Default case should never happen
                 default: return "their";
             }
         }
