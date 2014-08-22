@@ -216,6 +216,27 @@ namespace SnirkPlugin_Dynamic
 
         #endregion
 
+        #region Hidden and invisible
+
+        [ModCommand("Executes a command as \"An Admin\".", "annon")]
+        public static void Annon(CommandArgs com)
+        {
+            if (com.Parameters.Count == 0)
+            {
+                com.Player.SendErrorMessage("Usage: /annon <command> - executes command with your name as \"An Admin\"."); return;
+            }
+
+            // This shouldn't affect /rename.
+            var currname = com.Player.Name;
+            com.Player.TPlayer.name = "An Admin";
+            TShockAPI.Commands.HandleCommand(com.Player, com.Message.Substring(6));
+            com.Player.TPlayer.name = currname;
+
+            com.Player.SendInfoMessage("Attempted to execute \"{0}\" as \"An Admin\".", com.Message.Substring(6));
+        }
+
+        #endregion
+
         #region Plugin Info
 
         #endregion
