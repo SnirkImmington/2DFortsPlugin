@@ -190,9 +190,9 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         /// <param name="reason">Death message - not starting with space.</param>
         /// <param name="damage">Damage dealt</param>
-        public static void Kill(this TSPlayer ply, string reason = "was killed.", int damage = 999)
+        public static void Kill(this TSPlayer ply, string reason = "was killed.", int damage = 999, bool PvPDamage = true)
         {
-            NetMessage.SendData((int)PacketTypes.PlayerDamage, -1, -1,
+            NetMessage.SendData((int)PacketTypes.PlayerDamage, PvPDamage ? ply.Index : -1, -1,
                 " " + reason, ply.Index, 1, damage);
         }
 
