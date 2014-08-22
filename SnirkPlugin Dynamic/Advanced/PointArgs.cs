@@ -104,6 +104,16 @@ namespace SnirkPlugin_Dynamic
 
     public class UserPointTarget : ITarget
     {
+        private UserPoint point;
 
+        public float GetX() { return point.X; }
+        public float GetY() { return point.Y; }
+
+        public string GetInfo() { return "user point {0}".SFormat(point.Name); }
+
+        public UserPointTarget(UserPoint point)
+        {
+            this.point = point;
+        }
     }
 }
