@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TShockAPI;
 
@@ -22,6 +23,74 @@ namespace SnirkPlugin_Dynamic
             }
             TSPlayer.All.SendSuccessMessage("{0} just healed you!".SFormat(com.Player));
         }
+
+        #endregion
+
+        #region Chatting commands
+
+        [ModCommand("Private mod/admin-only chat.", "a", "l")]
+        public static void Log(CommandArgs com)
+        {
+            if (com.Parameters.Count == 0)
+            {
+                com.Player.SendErrorMessage("Usage: /a <text> - sends admins the text! Very useful! \"/adminchat\" is way too long to type.");
+                return;
+            }
+            Logs.StaffChat(false, com.Player.Name + ":" + com.Message.Substring(1));
+        }
+
+        [ModCommand("Spams text globally (sends 18 times).", "spam", DoLog = false)]
+        public static void Spam(CommandArgs com)
+        {
+            if (com.Parameters.Count == 0)
+            {
+                com.Player.SendErrorMessage("Usage: /spam <text> - spams the text globally!!!! Use /wspam for personal affairs.");
+                return;
+            }
+            (new Thread(Spam)).Start(new SpamArgs(TSPlayer.All, com.Player.Name, com.Message.Substring(4)));
+            Console.WriteLine(com.Player.Name + " used /spam " + com.Message);
+        }
+
+        [ModCommand("Spams text at a person.", "wspam", "ws")]
+        public static void WSpam(CommandArgs com)
+        {
+            if (com.Parameters.Count < 2)
+            {
+                com.Player.SendInfoMessage("Usage: /wspam <player> <message> - spams a player with the message!!!!!");
+                return;
+            }
+
+            var ply = TShock.Utils.FindPlayer(com.Parameters[0]);
+            if (ply.Count != 1) com.Player.SendErrorMessage(ply.Count + " player matched!");
+
+            else (new Thread(Spam)).Start(new SpamArgs(ply[0], com.Player.Name, string.Join(" ", com.Parameters.Skip(1))));
+        }
+
+        #region Spam Implementation
+        public static void Spam(object args)
+        {
+            var spam = (SpamArgs)args;
+
+            for (int i = 0; i < 17; i++)
+            {
+                if (spam.Target == null) return;
+                spam.Target.SendInfoMessage(string.Format("[Spam]{0}: {1}", spam.Host, spam.Message));
+                Thread.Sleep(500);
+            }
+        }
+        
+        public struct SpamArgs
+        {
+            public TSPlayer Target;
+            public string Host;
+            public string Message;
+
+            public SpamArgs(TSPlayer target, string host, string message)
+            {
+                Target = target; Host = host; Message = message;
+            }
+        }
+        #endregion
 
         #endregion
 
