@@ -89,7 +89,7 @@ namespace SnirkPlugin_Dynamic
         public static void Exception(Exception ex, string context = "", bool staff = false, bool admins = false)
         {
             var color = Console.ForegroundColor; Console.ForegroundColor = ConsoleColor.Red;
-            Utils.LastException = ex; Utils.LastExceptionTime = Utils.GetNow;
+            MainUtils.LastException = ex; MainUtils.LastExceptionTime = MainUtils.GetNow;
 
             if (context == "")
             {
@@ -106,7 +106,7 @@ namespace SnirkPlugin_Dynamic
             try
             {
                 File.AppendAllText(Path.Combine(Paths.DropboxAlVsSnirkFolder, "Errors.txt"), (new StringBuilder()).Append(
-                    Utils.GetNow.ToString()).Append(Environment.NewLine).Append(context == "" ? "" : "Error context: " + context + Environment.NewLine)
+                    MainUtils.GetNow.ToString()).Append(Environment.NewLine).Append(context == "" ? "" : "Error context: " + context + Environment.NewLine)
                     .Append(ex == null ? "[No exception object provided]" : ex.ToString())
                     .Append(Environment.NewLine + "-------------------------------------" + Environment.NewLine + Environment.NewLine).ToString());
                 Console.WriteLine("A full error report has been written to the dropbox error file.");
@@ -127,7 +127,7 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public static Task Data(string message)
         {
-            return BasicWriter.WriteLineAsync(Utils.GetNow.ToString("HH:mm:ss") + " - " + message);
+            return BasicWriter.WriteLineAsync(MainUtils.GetNow.ToString("HH:mm:ss") + " - " + message);
         }
         /// <summary>
         /// Writes a formatted message to the log asynchronously

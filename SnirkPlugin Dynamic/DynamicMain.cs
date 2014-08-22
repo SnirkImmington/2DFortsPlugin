@@ -131,7 +131,7 @@ namespace SnirkPlugin_Dynamic
 
                         // Change the word to pig latin
                         words[i] = restOfWord + firstLetter +
-                            (Utils.Vowels.IndexOf(firstLetter) == -1 ? "ay" : "way");
+                            (MainUtils.Vowels.IndexOf(firstLetter) == -1 ? "ay" : "way");
                     }
 
                     // Reflectively change the text property.\

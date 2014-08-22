@@ -7,7 +7,7 @@ using TShockAPI;
 
 namespace SnirkPlugin_Dynamic
 {
-    static class Utils
+    static class MainUtils
     {
         /// <summary>
         /// Returns the current datetime in eastern time.
