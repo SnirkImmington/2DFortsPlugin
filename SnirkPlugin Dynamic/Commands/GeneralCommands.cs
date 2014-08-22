@@ -72,6 +72,11 @@ namespace SnirkPlugin_Dynamic
 
         }
 
+        public static void PreventRename(CommandArgs com)
+        {
+
+        }
+
         #endregion
     }
 }

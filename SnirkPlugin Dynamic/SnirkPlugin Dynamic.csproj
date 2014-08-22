@@ -52,6 +52,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Advanced\PointArgs.cs" />
+    <Compile Include="CW\ClassWarfareData.cs" />
+    <Compile Include="CW\CWArena.cs" />
+    <Compile Include="CW\CWClass.cs" />
+    <Compile Include="CW\CWGameData.cs" />
+    <Compile Include="CW\CWGameStats.cs" />
+    <Compile Include="CW\CWState.cs" />
+    <Compile Include="CW\CWTeamData.cs" />
+    <Compile Include="CW\GameStatistics.cs" />
     <Compile Include="Database\UserPoint.cs" />
     <Compile Include="Player Data\2DFPlayer.cs" />
     <Compile Include="Commands\GeneralCommands.cs" />

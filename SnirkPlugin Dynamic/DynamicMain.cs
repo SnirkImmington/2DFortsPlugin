@@ -7,6 +7,7 @@ using TerrariaApi.Server;
 using Terraria;
 using System.IO;
 using TShockAPI;
+using Terraria;
 
 namespace SnirkPlugin_Dynamic
 {
@@ -30,6 +31,8 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public static bool InitFinished = false;
 
+        public static List<CWGame> Games;
+
         /// <summary>
         /// "Main" method called reflectively.
         /// </summary>
@@ -38,6 +41,9 @@ namespace SnirkPlugin_Dynamic
         {
             #region Initialize Variables
             Players = new PlayerData[Main.maxPlayers];
+            Games = new List<CWGame>();
+            // TODO this is called with null
+            PluginCaller = new DynamicPlugin(null);
 
             // Check for existing players
             if (!startup)
@@ -66,18 +72,6 @@ namespace SnirkPlugin_Dynamic
             { throw new ApplicationException("Logs failed while trying to start up!", ex); }
 
             #endregion
-
-            var threesome = new Nullable<bool>();
-            bool? alsoThreesome;
-            int? intMaybe;
-
-            intMaybe = 2;
-            intMaybe = null;
-
-            if (intMaybe.HasValue) // isn't null
-
-            if (intMaybe.Value == 2)
-
 
             InitFinished = true;
         }
