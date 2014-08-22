@@ -16,7 +16,7 @@ namespace SnirkPlugin_Dynamic
         public static void Facepalm(CommandArgs com)
         {
             com.Player.SendSuccessMessage(Extensions.GetRandom(ComUtils.FacepalmUserMessages));
-            com.Player.Kill(Extensions.GetRandom(ComUtils.FacepalmMessages)
+            com.Player.Damage(Extensions.GetRandom(ComUtils.FacepalmMessages)
                 .SFormat(ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.Self),
                         ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.They),
                         ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.Their),

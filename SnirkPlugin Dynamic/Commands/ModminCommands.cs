@@ -33,7 +33,23 @@ namespace SnirkPlugin_Dynamic
         //[BaseCommand(Permissions.slap, "Smart slap command with nice death message! [SmartParams]", "sslap")]
         public static void SSlap(CommandArgs com)
         {
+            if (com.Parameters.Count == 0)
+            {
+                com.Player.SendErrorMessage("Usage [SmartParams]: /sslap <player> [damage] - [SmartParams] - slaps a player with a nice death message.");
+                return;
+            }
+            var playerData = SmartParams.TSPlayer(com, 0);
+            if (playerData.Value == null)
+            {
+                com.Player.SendErrorMessage("Usage [SmartParams]: /sslap <player> [damage] - slaps a player with a nice death message.");
+                return;
+            }
+            // The classiest default damage value.
+            int damage = 69;
+            if (com.Parameters.Count != 1)
+            {
 
+            }
         }
 
         #endregion
@@ -110,28 +126,61 @@ namespace SnirkPlugin_Dynamic
 
         // Pointargs
 
-        //[ModCommand("Teleports you near things. [PointArgs]", "gonear", AllowServer=false)]
+        [ModCommand("Teleports you near things. [PointArgs]", "gonear", AllowServer=false)]
         public static void GoNear(CommandArgs com)
         {
+            var parser = new CommandParser(com, "/gonear [dest:pointargs] - takes you within 50 blocks.");
 
+            // TODO establish error messages.
+            var dest = parser.ParseTarget(); if (!dest.HasValue) return;
+
+            var point = new Point();
+            TShock.Utils.GetRandomClearTileWithInRange((int)(dest.Value.GetX() / 16), (int)(dest.Value.GetY() / 16), 50, 50, out point.X, out point.Y);
+            com.Player.Teleport(point.X * 16, point.Y * 16);
         }
 
-        //[ModCommand("Teleports you to things. [PointArgs] [SmartParams]", "goto", "gt", AllowServer=false)]
+        [ModCommand("Teleports you to things. [PointArgs] [SmartParams]", "goto", "gt", AllowServer=false)]
         public static void Goto(CommandArgs com)
         {
+            var parser = new CommandParser(com, "/goto [dest:pointargs] - I can show you the world");
+            var dest = parser.ParseTarget(); if (!dest.HasValue) return;
 
+            com.Player.Teleport(dest.Value.GetX(), dest.Value.GetY());
+            com.Player.SendSuccessMessage("Teleported you to {0}!", dest.Value.GetInfo());
         }
 
-        //[ModCommand("Teleports people to things. [SmartParams] [PointArgs]", "send", "sd")]
+        [ModCommand("Teleports people to things. [SmartParams] [PointArgs]", "send", "sd")]
         public static void Send(CommandArgs com)
         {
+            var parser = new CommandParser(com, "/send <player> <dest:pointargs> (smart)- sends a player somewhere");
 
+            var player = parser.ParsePlayer(); if (player == null) return;
+            var target = parser.ParseTarget(); if (!target.HasValue) return;
+
+            player.Teleport(target.Value.GetX(), target.Value.GetY());
+
+            if (player == com.Player)
+                com.Player.SendSuccessMessage("You telelported yourself to " + target.Value.GetInfo());
+            else
+            {
+                player.SendInfoMessage("{0} teleported you do {1}!", com.Player.Name, target.Value.GetInfo());
+                com.Player.SendSuccessMessage("Teleported {0} to {1}.", player.Name, target.Value.GetInfo());
+            }
         }
 
-        //[ModCommand("Swaps two players! [SmartParams]", "swap")]
+        [ModCommand("Swaps two players! [SmartParams]", "swap")]
         public static void Swap(CommandArgs com)
         {
+            var parser = new CommandParser(com, "/swap <player> <player> (smart) - swaps two players!");
 
+            var first = parser.ParsePlayer(); if (first == null) return;
+            var second = parser.ParsePlayer(); if (second == null) return;
+
+            var temp = new Vector2(first.X, first.Y);
+            first.Teleport(second.X, second.Y);
+            second.Teleport(temp.X, temp.Y);
+
+            ComUtils.TeleportString(com.Player, first, second);
         }
 
         [ModCommand("Teleports you near someone else", "tpnear", "tpn", "ntp", "neartp", AllowServer = false)]
