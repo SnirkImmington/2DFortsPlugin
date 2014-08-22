@@ -4,14 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TShockAPI;
+using Terraria;
 
 namespace SnirkPlugin_Dynamic
 {
     static class SmartParams
     {
-        public static SmartInfo<PlayerData> Player(CommandArgs com, int startIndex = 0)
+        public static SmartInfo<TSPlayer> TSPlayer(CommandArgs com, int startIndex = 0)
         {
-
+            return MatchList(com, TShock.Utils.FindPlayer, startIndex);
+        }
+        public static SmartInfo<NPC> NPC(CommandArgs com, int startIndex = 0)
+        {
+            return MatchList(com, TShock.Utils.GetNPCByIdOrName, startIndex);
+        }
+        public static SmartInfo<Item> Item(CommandArgs com, int startIndex = 0)
+        {
+            return MatchList(com, TShock.Utils.GetItemByIdOrName, startIndex);
+        }
+        public static SmartInfo<int> Buff(CommandArgs com, int startIndex = 0)
+        {
+            return MatchList(com, TShock.Utils.GetBuffByName, startIndex);
+        }
+        public static SmartInfo<T> MatchList<T>(CommandArgs com, Func<string, List<T>> finder, int startIndex = 0)
+        {
+            return null;
         }
     }
 
