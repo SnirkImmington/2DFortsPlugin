@@ -13,7 +13,7 @@ namespace SnirkPlugin_Dynamic
     {
         #region Specifics with different permissions
 
-        [BaseCommand("tshock.heal", "Heals ALL the players!", "healall")]
+        [BaseCommand(Permissions.heal, "Heals ALL the players!", "healall")]
         public static void HealAll(CommandArgs com)
         {
             for (int i = 0; i < TShock.Players.Length; i++)
@@ -22,6 +22,18 @@ namespace SnirkPlugin_Dynamic
                 TShock.Players[i].Heal();
             }
             TSPlayer.All.SendSuccessMessage("{0} just healed you!".SFormat(com.Player));
+        }
+
+        //[BaseCommand(Permissions.item, "Smart item command needs no quotes! [SmartParams]", "sitem", "si")]
+        public static void Sitem(CommandArgs com)
+        {
+
+        }
+
+        //[BaseCommand(Permissions.slap, "Smart slap command with nice death message! [SmartParams]", "sslap")]
+        public static void SSlap(CommandArgs com)
+        {
+
         }
 
         #endregion
@@ -112,6 +124,12 @@ namespace SnirkPlugin_Dynamic
 
         //[ModCommand("Teleports people to things. [SmartParams] [PointArgs]", "send", "sd")]
         public static void Send(CommandArgs com)
+        {
+
+        }
+
+        //[ModCommand("Swaps two players! [SmartParams]", "swap")]
+        public static void Swap(CommandArgs com)
         {
 
         }
