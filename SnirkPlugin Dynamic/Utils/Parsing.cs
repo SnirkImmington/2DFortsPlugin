@@ -278,7 +278,5 @@ namespace SnirkPlugin_Dynamic
             }
             return false;
         }
-    
-
     }
 }
