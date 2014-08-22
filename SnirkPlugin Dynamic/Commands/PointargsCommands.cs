@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnirkPlugin_Dynamic.Commands
+namespace SnirkPlugin_Dynamic
 {
     static class PointargsCommands
     {
-        // tpnear
-
-
+        // tpnear 
+        // sendnear
+        // send
+        // goto
     }
 }

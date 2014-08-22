@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TShockAPI;
 
-namespace SnirkPlugin_Dynamic.Commands
+namespace SnirkPlugin_Dynamic
 {
     [CommandsClass]
     class GeneralCommands
@@ -14,6 +14,7 @@ namespace SnirkPlugin_Dynamic.Commands
             "facepalm", "fp", "facedesk", AllowServer = false, DoLog = false)]
         public static void Facepalm(CommandArgs com)
         {
+            com.Player.SendSuccessMessage(Extensions.GetRandom(ComUtils.FacepalmUserMessages));
             com.Player.Kill(Extensions.GetRandom(ComUtils.FacepalmMessages)
                 .SFormat(ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.Self),
                         ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.They),
@@ -22,7 +23,7 @@ namespace SnirkPlugin_Dynamic.Commands
 
         #region Donors only
 
-        [DonorCommand("")]
+        //[DonorCommand("")]
         public static void Grep(CommandArgs com)
         {
             // Error/usage message.

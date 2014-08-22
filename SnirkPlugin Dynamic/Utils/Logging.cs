@@ -28,11 +28,11 @@ namespace SnirkPlugin_Dynamic
         public static void Init(bool startup)
         {
             BasicWriter = new StreamWriter(File.OpenWrite(
-                Path.Combine(Paths.LogsFolder, DateTime.Now.ToString("dd-mm-hh MM") + ".txt"));
+                Path.Combine(Paths.LogsFolder, DateTime.Now.ToString("dd-mm-hh MM") + ".txt")));
             BasicWriter.WriteLine("Plugin's log, date " + DateTime.Now + ".");
 
             TraceWriter = new StreamWriter(File.OpenWrite(
-                Path.Combine(Paths.LogsFolder, "")))
+                Path.Combine(Paths.LogsFolder, "")));
         }
 
         public static void Dispose(bool startup)
