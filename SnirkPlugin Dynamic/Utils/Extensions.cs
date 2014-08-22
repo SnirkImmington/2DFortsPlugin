@@ -16,14 +16,14 @@ namespace SnirkPlugin_Dynamic
     /// <summary>
     /// Contains extension methods for utilities
     /// </summary>
-    class Extensions
+    public static class Extensions
     {
         #region Players
 
         /// <summary>
         /// Gets the PlayerData from DynamicMain.Players for the TSPlayer.
         /// </summary>
-        public static PlayerData GetPlayer(this TSPlayer player)
+        public static PlayerData GetData(this TSPlayer player)
         {
             return DynamicMain.Players[player.Index];
         }

@@ -127,10 +127,10 @@ namespace SnirkPlugin_Dynamic
         /// <param name="ply">The player to check</param>
         /// <param name="error">An error message if invalid</param>
         /// <returns>A parsed ITeleportTarget or null</returns>
-        public static ITarget Target(string input, PlayerData ply, out string error) // need point info
+        public static ITarget Target(string input, PlayerData ply) // need point info
         {
             // "ply|player:snirk", "warp:name", "warpplate|wp:wp" "point:pointname", "pos:x,y", "region|reg:reg", "randompt", "gps:x,y"
-            error = "";
+            var error = "";
 
             #region Quickies
             if (input == "randompt")

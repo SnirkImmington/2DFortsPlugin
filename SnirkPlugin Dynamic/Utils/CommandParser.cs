@@ -77,6 +77,15 @@ namespace SnirkPlugin_Dynamic
         }
 
         /// <summary>
+        /// Parses an ITarget from the params.
+        /// </summary>
+        public ITarget? ParseTarget(bool smart = true)
+        {
+            return Parse(false, "Invalid pointargs!",
+                x => SnirkPlugin_Dynamic.Parse.Target(x, com.Player.GetData()));
+        }
+
+        /// <summary>
         /// Gets the next parameter in line and moves forward.
         /// Returns "" and does not move if there are none left.
         /// </summary>
@@ -165,7 +174,7 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         /// <param name="usage">The message to be sent in some faulure cases.</param>
         /// <param name="com">The CommandArgs to parse.</param>
-        public CommandParser(string usage, CommandArgs com)
+        public CommandParser(CommandArgs com, string usage)
         {
             Usage = usage;
             this.com = com;

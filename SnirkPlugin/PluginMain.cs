@@ -20,8 +20,12 @@ namespace SnirkPlugin
         /// <summary>
         /// URI to save the plugin at.
         /// </summary>
-        private const string SaveURL = ServerApi.ServerPluginsDirectoryPath + @"\DynamicSnirk";
+        private static string SaveURL = ServerApi.ServerPluginsDirectoryPath + @"\DynamicSnirk";
 
+
+        public override void Initialize()
+        {
+        }
 
         public Version GetLocalVersion()
         {
