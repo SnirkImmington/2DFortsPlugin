@@ -96,6 +96,26 @@ namespace SnirkPlugin_Dynamic
 
         #region Teleporting
 
+        // Pointargs
+
+        //[ModCommand("Teleports you near things. [PointArgs]", "gonear", AllowServer=false)]
+        public static void GoNear(CommandArgs com)
+        {
+
+        }
+
+        //[ModCommand("Teleports you to things. [PointArgs] [SmartParams]", "goto", "gt", AllowServer=false)]
+        public static void Goto(CommandArgs com)
+        {
+
+        }
+
+        //[ModCommand("Teleports people to things. [SmartParams] [PointArgs]", "send", "sd")]
+        public static void Send(CommandArgs com)
+        {
+
+        }
+
         [ModCommand("Teleports you near someone else", "tpnear", "tpn", "ntp", "neartp", AllowServer = false)]
         public static void TPNear(CommandArgs com)
         {
