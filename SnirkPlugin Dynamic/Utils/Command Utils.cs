@@ -160,5 +160,26 @@ namespace SnirkPlugin_Dynamic
             NetMessage.SendData((int)PacketTypes.PlayerDamage, -1, -1,
                 " " + reason, ply.Index, 1, damage);
         }
+
+        /// <summary>
+        /// Used for teleports possibly involving three players.
+        /// </summary>
+        public static string TeleportString(TSPlayer teller, TSPlayer p1, TSPlayer p2)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (p1.Index == teller.Index)
+                sb.Append("Switched you with ");
+            else sb.Append("Switched " + p1.Name + " with ");
+
+            if (p2.Index == teller.Index && p1.Index == teller.Index)
+                sb.Append("yourself!");
+            else if (p2.Index == teller.Index)
+                sb.Append("you!");
+            else // other player
+                sb.Append(p2.Name + "!");
+
+            return sb.ToString();
+        }
     }
 }
