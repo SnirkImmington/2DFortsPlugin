@@ -42,7 +42,6 @@ namespace SnirkPlugin_Dynamic
             "Facepalm successful!",
             "Success! You just got facepalmed!",
         };
-
         #endregion
 
         /// <summary>
@@ -96,6 +95,37 @@ namespace SnirkPlugin_Dynamic
             "facepalmed - which is deadly here at 2DForts.",
             "facepalmed while wearing really spiky gloves or something.",
             "facepalmed {0} the cold, cold ground.",
+        };
+        #endregion
+
+        #region public const string[] SlapMessages = new string[]
+        public const string[] SlapMessages = new string[] 
+        {
+            "was slapped silly.",
+            "died of slaps.",
+            "was slapped to death.",
+            "got slapped.",
+            "got one slap too many.",
+            "needs to not anger those who slap.",
+            
+            "exploded from the force of being slapped.",
+            "SLAP SLAP SLAP SLAP SLAP FATALITY!!!",
+            "SLLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP",
+            "wasted",
+            "fainted.",
+
+            "deserved that.",
+            "didn't deserve that.",
+
+            "was slapped! It's super effective!",
+            "could not survive being slapped.",
+            "lost to the power of the slap.",
+
+            "was the target of /slap.",
+            "!",
+            "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+
+            "was kinda turned on, too",
         };
         #endregion
 
