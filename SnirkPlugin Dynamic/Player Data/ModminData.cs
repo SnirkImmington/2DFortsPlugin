@@ -45,6 +45,11 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public bool SeeOnGC;
 
+        /// <summary>
+        /// Saved points on the map.
+        /// </summary>
+        public List<UserPoint> Points;
+
         // Non-saved //
 
         /// <summary>
@@ -69,7 +74,7 @@ namespace SnirkPlugin_Dynamic
         public bool ShouldSave()
         {
             return WelcomeMessage | SeeOnGC | PlayerJoinInfo | 
-                !PluginInfo | !ModminChat | PluginTracing;
+                !PluginInfo | !ModminChat | PluginTracing | Points.Count > 0;
         }
     
         /// <summary>

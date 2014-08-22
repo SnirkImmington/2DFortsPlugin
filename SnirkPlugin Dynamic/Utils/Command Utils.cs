@@ -27,6 +27,23 @@ namespace SnirkPlugin_Dynamic
         public const string DonorPermission = "2dforts.donor";
 
         /// <summary>
+        /// Messages sent to the user of /facepalm.
+        /// </summary>
+        #region public const string[] FacepalmUserMessages = new string[] { }
+        public const string[] FacepalmUserMessages =
+        {
+            "Congratulations! You used /facepalm. Have a nice day!",
+            "Thank you for using /facepalm.",
+            "Thank you for using /facepalm, we here at Immington Industries appreciate your business.",
+            "Thank you for using /facepalm. Come back soon!",
+            "Thank you for using /facepalm. For more options, press 5.",
+            
+            "You used /facepalm! It's super effective!",
+            "Facepalm successful!",
+            "Success! You just got facepalmed!",
+        };
+
+        /// <summary>
         /// An array of messages for /facepalm.
         /// </summary>
         #region public const string[] FacepalmMessages = new string[] { }
@@ -44,13 +61,23 @@ namespace SnirkPlugin_Dynamic
             "facepalmed with the force of something really forceful.",
             "facepalmed with something something it's OVER NINE THOUSAND1!11!",
             "facepalmed with the force of like twenty-two tohusand billion explosions, man.",
+            "facepalmed with the force of the asteriod that killed the dionsaurs.",
+            "facepalmed with the force of a palm to the face. A deadly palm to the face.",
 
             "used /facepalm.",
             "facepalmed.",
+            "something something facepalm.",
             "needs to calm down about things.",
             "needs to find a better way to vent {2} anger.",
             "facepalmed really hard.",
             "facepalmed with the skill of an assasin.",
+
+            "used /facepalm! It's super effective!",
+            "facepalmed! IT'S OVER NINE THOUUSAAAAAAAAND!!!!",
+
+            "palmed {0} in the face.",
+            "slapped {0} silly. In the face.",
+            "like toatally faceplamed, dude.",
 
             "facepalmed {0} to death.",
             "facepalmed {0} into oblivion.",
@@ -62,6 +89,7 @@ namespace SnirkPlugin_Dynamic
             "was eviscerated by facepalming.",
             "was killed by facepalming.",
             "was exploded by facepalming.",
+            "successfully facepalmed.",
 
             "facepalmed - which is deadly here at 2DForts.",
             "facepalmed while wearing really spiky gloves or something.",

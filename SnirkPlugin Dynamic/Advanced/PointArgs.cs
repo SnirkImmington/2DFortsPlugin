@@ -101,4 +101,9 @@ namespace SnirkPlugin_Dynamic
     {
 
     }
+
+    public class UserPointTarget : ITarget
+    {
+
+    }
 }

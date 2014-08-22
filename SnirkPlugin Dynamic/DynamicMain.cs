@@ -67,6 +67,16 @@ namespace SnirkPlugin_Dynamic
 
             #endregion
 
+            var threesome = new Nullable<bool>();
+            bool? alsoThreesome;
+            int? intMaybe;
+
+            intMaybe = 2;
+            intMaybe = null;
+
+            if (intMaybe.HasValue) // isn't null
+
+            if (intMaybe.Value == 2)
 
 
             InitFinished = true;
@@ -130,7 +140,8 @@ namespace SnirkPlugin_Dynamic
                             (Utils.Vowels.IndexOf(firstLetter) == -1 ? "ay" : "way");
                     }
 
-                    // Reflectively change the text property.
+                    // Reflectively change the text property.\
+                    // public string Text { get; private set; }
                     e.GetType().GetProperty("Text").GetSetMethod(true).Invoke(e.Text, new object[] { string.Join(" ", words) });
                 }
             }
