@@ -44,21 +44,6 @@ namespace SnirkPlugin_Dynamic
         #region General
 
         // Strings
-
-        /// <summary>
-        /// Pluralizes a string with a count.
-        /// </summary>
-        public static string Plural(this string input, int count = 2)
-        {
-            if (count == 1) return input;
-            switch (input.Last())
-            {
-                case 's':
-                    return input + "es";
-
-                default: return input + 's';
-            }
-        }
         /// <summary>
         /// Determines if this character is a e i o u y.
         /// </summary>

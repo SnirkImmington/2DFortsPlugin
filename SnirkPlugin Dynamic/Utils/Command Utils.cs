@@ -165,6 +165,37 @@ namespace SnirkPlugin_Dynamic
         }
 
         /// <summary>
+        /// Pluralizes a string with a count -
+        /// includes ending in s or y.
+        /// </summary>
+        /// <param name="count">How many items.</param>
+        /// <param name="text">The text to pluralize</param>
+        public static string Pluralize(int count, string text)
+        {
+            if (count == 1) return text;
+
+            var ending = text[text.Length - 1];
+
+            if (ending == 'y')
+            {
+                // Yea, not length checks here, don't pass
+                // 'y' to this thing, kay?
+                if (!MainUtils.Vowels.Contains(text[text.Length - 2]))
+                {
+                    var subEnding = text.Substring(0, text.Length - 2);
+                    return subEnding + "ies";
+                }
+                return text + 's';
+
+            }
+            else if (ending == 's')
+            {
+                return text + "es";
+            }
+            return text + "s";
+        }
+
+        /// <summary>
         /// Sends text properly in AutoGC form using a group.
         /// </summary>
         /// <param name="text">The text to send</param>
