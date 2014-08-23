@@ -51,10 +51,10 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         /// <param name="admin">Whether to only tell admins.</param>
         /// <param name="text">The text to send.</param>
-        public static void StaffRaw(bool admin, string text, Color color, LogType type)
+        public static void StaffRaw(bool admin, string text, Color color, LogType type, int ignored = -1)
         {
             for (int i = 0; i < DynamicMain.Players.Length; i++)
-                if (DynamicMain.Players[i] != null
+                if (DynamicMain.Players[i] != null && i != ignored
                     && DynamicMain.Players[i].IsStaff(admin) && DynamicMain.Players[i].AcceptsLog(type))
                     DynamicMain.Players[i].TSPlayer.SendMessage(text, color);
             
@@ -66,9 +66,9 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         /// <param name="admin">Whether to only tell admins.</param>
         /// <param name="text">The text to send.</param>
-        public static void StaffPlugin(bool admin, string text, LogType type = LogType.General)
+        public static void StaffPlugin(bool admin, string text, LogType type = LogType.General, int ignored = -1)
         {
-            StaffRaw(admin, "[Snirk Plugin]: " + text, GeneralConfig.StandardLogsColor, type);
+            StaffRaw(admin, "[Snirk Plugin]: " + text, GeneralConfig.StandardLogsColor, type, ignored);
         }
         /// <summary>
         /// Sends text to staff on server with "[Staffchat]" and logs it.
@@ -76,9 +76,9 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         /// <param name="admin">Whether to only tell admins.</param>
         /// <param name="text">The text to send.</param>
-        public static void StaffChat(bool admin, string text, LogType type = LogType.General)
+        public static void StaffChat(bool admin, string text, LogType type = LogType.General, int ignored = -1)
         {
-            StaffRaw(admin, "[Staffchat]: " + text, GeneralConfig.StandardLogsColor, type);
+            StaffRaw(admin, "[Staffchat]: " + text, GeneralConfig.StandardLogsColor, type, ignored);
         }
 
         #endregion
@@ -155,7 +155,7 @@ namespace SnirkPlugin_Dynamic
         /// <summary>
         /// Sends message to admins, console and logs.
         /// </summary>
-        public static Task AllRaw(string message, bool admin = false, LogType type = LogType.General)
+        public static Task AllRaw(string message, TSPlayer discluded = null, bool admin = false, LogType type = LogType.General)
         {
             StaffRaw(admin, message, GeneralConfig.StandardLogsColor, type); 
             return Data(message);

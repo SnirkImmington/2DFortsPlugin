@@ -58,6 +58,11 @@ namespace SnirkPlugin_Dynamic
 
         }
 
+        public static void HostException(Exception ex)
+        {
+            
+        }
+
         public struct HostFileArgs
         {
             public int PlayerIndex;

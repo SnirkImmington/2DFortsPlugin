@@ -266,17 +266,28 @@ namespace SnirkPlugin_Dynamic
             }
         }
 
-        public static bool Boolean(string text)
+        public static bool? Boolean(string text)
         {
             switch (text.ToLower())
             {
                 case "on":
                 case "true":
                 case "yes":
+                case "enable":
                 case "enabled":
+                case "allow":
                     return true;
+
+                case "off":
+                case "false":
+                case "no":
+                case "disable":
+                case "disabled":
+                case "deny":
+                    return false;
+
+                default: return null;
             }
-            return false;
         }
     }
 }
