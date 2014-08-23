@@ -340,5 +340,57 @@ namespace SnirkPlugin_Dynamic
         #region Plugin Info
 
         #endregion
+
+        #region General Utils
+
+        [ModCommand("Searches for things. Uses regexes.", "grep")]
+        // TODO make this threaded
+        public static void Grep(CommandArgs com)
+        {
+            // Error/usage message.
+            if (com.Parameters.Count < 2 || com.Parameters[0] == "help")
+            {
+                com.Player.SendInfoMessage("\"grep\" is a Unix command for searching via regular expressions.");
+                com.Player.SendSuccessMessage("If you don't understand any of those words, don't worry and don't bother.");
+                com.Player.SendInfoMessage("Usage: /grep players|warps|regions|wplate <match regex> - matches members of those groups by the match regex");
+                return;
+            }
+            com.Player.SendInfoMessage("Creating regular expression...");
+            // Create regex option to match.
+            var matchEx = new Regex(com.Parameters[1], RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled, new TimeSpan(0, 0, 5));
+            com.Player.SendInfoMessage("Searching...");
+            var found = new List<string>();
+            switch (com.Parameters[0])
+            {
+                case "regions":
+                case "region":
+                case "reg":
+                    break;
+
+                case "warps":
+                case "warp":
+                    break;
+
+                case "players":
+                case "player":
+                case "online":
+                case "who":
+                case "ply":
+                case "plr":
+                    break;
+
+                case "warpplate":
+                case "wplate":
+                    break;
+
+                case "admins":
+                case "modmins":
+                case "staff":
+                    break;
+            }
+
+        }
+
+        #endregion
     }
 }
