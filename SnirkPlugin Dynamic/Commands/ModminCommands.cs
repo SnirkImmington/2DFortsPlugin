@@ -314,6 +314,27 @@ namespace SnirkPlugin_Dynamic
             com.Player.SendInfoMessage("Attempted to execute \"{0}\" as \"An Admin\".", com.Message.Substring(6));
         }
 
+        [ModCommand("Makes you invisible", "invible", "invis", "toggleinvis", "setinvis")]
+        public static void ToggleInvis(CommandArgs com)
+        {
+            var data = com.Player.GetData();
+            if (com.Parameters.Count == 1)
+            {
+                var value = Parse.Boolean(com.Parameters[0]);
+                if (!value.HasValue) com.Player.SendErrorMessage("Usage: /invis [on|off] (smart) - toggles/sets invisibility!");
+                else data.Modmin.Indetectable = value.Value;
+            } 
+            else data.Modmin.Indetectable = !data.Modmin.Indetectable;
+            com.Player.SendSuccessMessage("You are now {0}invisible!", value.Value ? "" : "not ");
+
+            if (data.Modmin.Indetectable) Logs.StaffPlugin(false, "{0} is now invisible.", LogType.General, com.Player.Index);
+        }
+
+        public static void Follow(CommandArgs com)
+        {
+
+        }
+
         #endregion
 
         #region Plugin Info
