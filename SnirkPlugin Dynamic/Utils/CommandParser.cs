@@ -56,14 +56,58 @@ namespace SnirkPlugin_Dynamic
         /// the counter along the parameters.
         /// <para>Sends error message if parsing failed.</para>
         /// </summary>
-        /// <param name="smart">Whether to assimilate more arguments if the parse failed.</param>
+        /// <param name="multiple">Whether to assimilate more arguments if the parse failed.</param>
         /// <param name="error">The error message to give if the method didn't work</param>
         /// <param name="finder">The function to invoke for parsing</param>
         /// <returns>A parsed T or null if the function didn't work.</returns>
         /// <example>Parse(false, "No number found", int.Parse)</example>
-        public T? Parse<T>(bool smart, string error, Func<string, T> finder)
+        public T? Parse<T>(bool multiple, string error, Func<string, T> finder)
         {
+            var text = "";
 
+            do // first time using do while syntax for me
+            {
+                // Check for parameters
+                var param = PopParameter();
+                if (param == "")
+                {
+                    // If this is the first time we should expect at least one param
+                    if (text == "") SendUsage();
+                    // else have had multiples, so send error message
+                    else com.Player.SendErrorMessage(error);
+                    return null;
+                }
+                else text += " " + param;
+
+                // Parse
+                try
+                {
+                    // Call the function on the text
+                    var result = finder(text);
+                    // If it fails and we can't try again, return with error
+                    if (result == null && !multiple)
+                    {
+                        com.Player.SendErrorMessage(error);
+                        return null;
+                    }
+                    // Return the result.
+                    return result;
+                }
+                catch
+                {
+                    // If we can't go again then return null;
+                    if (!multiple)
+                    {
+                        com.Player.SendErrorMessage(error);
+                        return null;
+                    }
+                    // else just continue
+                }
+            }
+            while (multiple);
+            // All code should have returned by now given that there are a finite number of 
+            // params and numbering is handled through PopParameter().
+            return null;
         }
 
         /// <summary>
