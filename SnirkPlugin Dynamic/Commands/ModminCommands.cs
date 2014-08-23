@@ -176,25 +176,14 @@ namespace SnirkPlugin_Dynamic
             var first = parser.ParsePlayer(); if (first == null) return;
             var second = parser.ParsePlayer(); if (second == null) return;
 
+            if (first.Index != com.Player.Index && !first.TPAllow)
+                com.Player.SendErrorMessage("{0} does not let you move {1} around!",)
+
             var temp = new Vector2(first.X, first.Y);
             first.Teleport(second.X, second.Y);
             second.Teleport(temp.X, temp.Y);
 
             ComUtils.TeleportString(com.Player, first, second);
-        }
-
-        [ModCommand("Teleports you near someone else", "tpnear", "tpn", "ntp", "neartp", AllowServer = false)]
-        public static void TPNear(CommandArgs com)
-        {
-            var target = Parse.FromAllParams(com, TShock.Utils.FindPlayer, 
-                "Usage: /tpnear <player>: Teleports you within 50 blocks of the player.", "player");
-            if (target == null) return;
-
-            var telepos = new Point();
-            TShock.Utils.GetRandomClearTileWithInRange(target.TileX, target.TileY, 50, 50, out telepos.X, out telepos.Y);
-
-            com.Player.Teleport(telepos.X * 16, telepos.Y * 16);
-            com.Player.SendInfoMessage("Teleported you near " + target.Name + "!");
         }
 
         [ModCommand("Teleports you to a random point in a region, instead of the center.", "rtpr", "regtpr", "regiontprand")]
@@ -219,9 +208,8 @@ namespace SnirkPlugin_Dynamic
 
         }
 
-        private static string swapUsage = "Usage: /swap <player> <player> |smartparams| - swaps two people's positions!";
-        //[Unfinished("Need to improve algorithm!")]
-        [BaseCommand("tshock.tp.others", "Swaps two people's positions!", "swap", "swaptp")]
+        private static string swapUsage = "/swap <player> <player> [SmartParams] - swaps two people's positions!";
+        [BaseCommand(Permissions.tpallothers, "Swaps two people's positions!", "swap", "swaptp")]
         public static void Swap(CommandArgs com)
         {
             if (com.Parameters.Count < 2)
@@ -229,6 +217,9 @@ namespace SnirkPlugin_Dynamic
                 com.Player.SendErrorMessage(swapUsage);
                 return;
             }
+
+            
+
             var plr1 = Parse.FromFirstParams(ref com, TShock.Utils.FindPlayer, swapUsage, "player");
             if (plr1 == null) return;
 
@@ -288,6 +279,7 @@ namespace SnirkPlugin_Dynamic
             Commands.HandleCommand(com.Player, "butcher");
             Commands.HandleCommand(com.Player, "rain stop");
             Commands.HandleCommand(com.Player, "time noon");
+            Commands.HandleCommand(com.Player, "sslap {0} 5".SFormat(com.Player.Name));
             com.Player.SendInfoMessage("Removed annoyances. This was Ren's idea.");
         }
 
