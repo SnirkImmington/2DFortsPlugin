@@ -46,7 +46,7 @@ namespace SnirkPlugin_Dynamic
         /// for example a list of players from part of a name.</param>
         /// <returns>A parsed T or null.</returns>
         /// <example>Parse(true, "item", TShock.Utils.GetItemByIdOrName)</example>
-        public T? Parse<T>(bool smart, string type, Func<string, List<T>> finder)
+        public T Parse<T>(bool smart, string type, Func<string, List<T>> finder) where T : class
         {
             var text = "";
 
@@ -56,7 +56,7 @@ namespace SnirkPlugin_Dynamic
                 if (param == "")
                 {
                     if (text == "") SendUsage();
-                    else com.Player.SendErrorMessage("No {0} found!", type);
+                    else com.Player.SendErrorMessage("No {0} found!", ComUtils.Pluralize(0, type));
                     return null;
                 }
                 if (text == "") text += param;
@@ -70,10 +70,15 @@ namespace SnirkPlugin_Dynamic
 
                 if (result.Count == 1) return result[0];
 
-                else if (result.Count == 0 && !smart)
-                    com.Player.SendErrorMessage("{0} {1} matched!", result.Count, )
+                // not one returned and can't continue.
+                else if (!smart) 
+                {
+                    com.Player.SendErrorMessage("{0} {1} matched!", result.Count, ComUtils.Pluralize(result.Count, type));
+                    return null;
+                }
             }
             while (smart);
+            return null;
         }
 
         /// <summary>
