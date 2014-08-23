@@ -194,7 +194,19 @@ namespace SnirkPlugin_Dynamic
         /// <param name="errorUsage">Whether to send an error message with usage.</param>
         public string JoinNext(int count, bool errorUsage = false)
         {
-
+            var text = "";
+            for (int i = 0; i < count; i++)
+            {
+                var param = PopParameter();
+                if (param == "")
+                {
+                    if (errorUsage) SendUsage();
+                    return text;
+                }
+                if (text == "") text += param;
+                else text += ' ' + param;
+            }
+            return text;
         }
 
         /// <summary>
@@ -202,7 +214,7 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public string JoinTillEnd()
         {
-
+            return JoinNext(com.Parameters.Count - ParamIndex - 1, false);
         }
 
         /// <summary>
@@ -214,7 +226,13 @@ namespace SnirkPlugin_Dynamic
         /// <returns></returns>
         public bool ScrollToIndex(int resultIndex, bool errorUsage = true)
         {
-            
+            if (resultIndex > com.Parameters.Count)
+            {
+                if (errorUsage) SendUsage();
+                return false;
+            }
+            ParamIndex = resultIndex;
+            return true;
         }
 
         /// <summary>
