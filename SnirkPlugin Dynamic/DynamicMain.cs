@@ -37,13 +37,13 @@ namespace SnirkPlugin_Dynamic
         /// "Main" method called reflectively.
         /// </summary>
         /// <param name="startup"></param>
-        public static void Init(bool startup)
+        public static void Init(bool startup, TerrariaPlugin caller)
         {
             #region Initialize Variables
             Players = new PlayerData[Main.maxPlayers];
             Games = new List<CWGame>();
             // TODO this is called with null
-            PluginCaller = new DynamicPlugin(null);
+            PluginCaller = caller;
 
             // Check for existing players
             if (!startup)
@@ -82,6 +82,11 @@ namespace SnirkPlugin_Dynamic
         }
 
         #region Events
+
+        private static void OnSecond()
+        {
+
+        }
 
         private static void OnJoin(JoinEventArgs args)
         {
