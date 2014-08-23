@@ -46,9 +46,34 @@ namespace SnirkPlugin_Dynamic
         /// for example a list of players from part of a name.</param>
         /// <returns>A parsed T or null.</returns>
         /// <example>Parse(true, "item", TShock.Utils.GetItemByIdOrName)</example>
-        public T Parse<T>(bool smart, string type, Func<string, List<T>> finder)
+        public T? Parse<T>(bool smart, string type, Func<string, List<T>> finder)
         {
-            
+            var text = "";
+
+            do
+            {
+                var param = PopParameter();
+                if (param == "")
+                {
+                    if (text == "") SendUsage();
+                    else com.Player.SendErrorMessage("No {0} found!", type);
+                    return null;
+                }
+                if (text == "") text += param;
+                else text += " " + param;
+
+                // Parse the current text.
+                // Note the lack of try block - 
+                // methods used here should not
+                // throw exceptions.
+                var result = finder(text);
+
+                if (result.Count == 1) return result[0];
+
+                else if (result.Count == 0 && !smart)
+                    com.Player.SendErrorMessage("{0} {1} matched!", result.Count, )
+            }
+            while (smart);
         }
 
         /// <summary>
