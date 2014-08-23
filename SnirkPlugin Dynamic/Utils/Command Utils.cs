@@ -134,6 +134,8 @@ namespace SnirkPlugin_Dynamic
         };
         #endregion
 
+        #region Used in commands
+
         /// <summary>
         /// Creates a gender-style string based on a player's gender.
         /// </summary>
@@ -247,5 +249,13 @@ namespace SnirkPlugin_Dynamic
 
             return sb.ToString();
         }
+
+        #endregion
+
+        #region Snirk-specific
+
+        
+
+        #endregion
     }
 }

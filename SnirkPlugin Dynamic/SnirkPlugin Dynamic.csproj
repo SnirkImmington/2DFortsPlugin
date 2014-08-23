@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Advanced\PointArgs.cs" />
+    <Compile Include="Commands\SnirkCommands.cs" />
     <Compile Include="CW\ClassWarfareData.cs" />
     <Compile Include="CW\CWArena.cs" />
     <Compile Include="CW\CWClass.cs" />
@@ -81,8 +82,10 @@
     <Compile Include="Utils\General Utils.cs" />
     <Compile Include="Utils\Info.cs" />
     <Compile Include="Utils\Logging.cs" />
+    <Compile Include="Utils\NetUtils.cs" />
     <Compile Include="Utils\Parsing.cs" />
     <Compile Include="Utils\Paths.cs" />
+    <Compile Include="Utils\Private.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Player Ranking\" />
