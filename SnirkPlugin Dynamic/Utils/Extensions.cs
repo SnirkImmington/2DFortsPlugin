@@ -21,6 +21,14 @@ namespace SnirkPlugin_Dynamic
         #region Players
 
         /// <summary>
+        /// Gets the PlayerData for the CommandArgs.
+        /// </summary>
+        public static PlayerData FPlayer(this CommandArgs com)
+        {
+            return DynamicMain.Players[com.Player.Index];
+        }
+
+        /// <summary>
         /// Gets the PlayerData from DynamicMain.Players for the TSPlayer.
         /// </summary>
         public static PlayerData GetData(this TSPlayer player)

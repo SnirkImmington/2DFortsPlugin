@@ -72,6 +72,7 @@ namespace SnirkPlugin_Dynamic
 
                 case "ply":
                 case "player":
+                    if (!com.Player.IsStaff()) { parser.SendUsage(); return; }
                     var players = from player in DynamicMain.Players
                                   where player.Index != com.Player.Index // don't match yerself
                                   && !(player.IsStaff() ? player.Modmin.Indetectable : false)
@@ -91,6 +92,7 @@ namespace SnirkPlugin_Dynamic
                 case "modmin":
                 case "mod":
                 case "staff":
+                    if (!com.Player.IsStaff()) { parser.SendUsage(); return; }
                     var staff = from player in DynamicMain.Players
                                 where player.IsStaff() && player.Index != com.Player.Index
                                 select player.TSPlayer.Name;
@@ -106,6 +108,7 @@ namespace SnirkPlugin_Dynamic
 
                 case "region":
                 case "reg":
+                    if (!com.Player.IsStaff()) { parser.SendUsage(); return; }
                     var rectangle = new Rectangle(Math.Abs(com.Player.TileX - (distance/2)), 
                         Math.Abs(com.Player.TileY - (distance/2)), distance, distance);
                     var regions = from region in TShock.Regions.Regions
@@ -123,10 +126,12 @@ namespace SnirkPlugin_Dynamic
 
                 case "warpplate":
                 case "wplate":
+                    if (!com.Player.IsStaff()) { parser.SendUsage(); return; }
                     return;
 
                 case "point":
                 case "userpoint":
+                    if (!com.Player.IsStaff()) { parser.SendUsage(); return; }
                     var points = from point in com.Player.GetData().Modmin.Points
                                  where Math.Abs(com.Player.X - point.X) <= distance
                                  && Math.Abs(com.Player.Y - point.Y) <= distance
