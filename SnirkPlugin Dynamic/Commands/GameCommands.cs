@@ -24,10 +24,68 @@ namespace SnirkPlugin_Dynamic
             // cw pause
             // cw resume
             // cw stop
-            // cw kick
+            // cw kick <player> (smart)
+            // cw refill
 
             // Create the parser with the usage.
             var parser = new CommandParser(com, GetCWUsage(com.FPlayer()));
+
+            var type = parser.PopParameter(); if (type == "") return;
+            var player = com.FPlayer();
+            switch (type)
+            {
+                case "host":
+                case "start":
+                    if (!com.FPlayer().IsDonor || !com.Player.IsStaff())
+                    {
+                        com.Player.SendErrorMessage("Only donors or modmins can host CW games!"); return;
+                    }
+                    if (player.CW != null)
+                    {
+                        com.Player.SendErrorMessage("You are already playing CW!"); return;
+                    }
+                    var game = new CWGame(player);
+                    com.Player.SendInfoMessage("Game started. Remember, you still need /cw join to play! You may leave and come back with a new character if you need.");
+                    TSPlayer.All.SendMessage("has hosted a new game of Class Warfare!", );
+                    return;
+
+                case "join":
+                    if (player.CW != null)
+                    {
+                        com.Player.SendErrorMessage("You are already playing CW!"); return;
+                    }
+                    // Length should be 1 or zero really
+                    var games = DynamicMain.CWGames.Where(g => g.State == CWGameState.PreparingTeams).ToList();
+                    if (games.Count == 0)
+                    {
+                        com.Player.SendErrorMessage("There isn't a CW game to join right now!"); return;
+                    }
+                    return;
+
+                case "observe":
+                case "spectate":
+                    return;
+
+                case "continue":
+                    return;
+
+                case "pause":
+                    return;
+
+                case "resume":
+                    return;
+
+                case "stop":
+                case "halt":
+                    return;
+
+                case "refill":
+                    return;
+
+                case "kick":
+                case "ban":
+                    return;
+            }
         }
 
         /// <summary>
@@ -62,7 +120,7 @@ namespace SnirkPlugin_Dynamic
                     if (ply.CW.Game.State == CWGameState.Playing)
                         builder.Append("pause|stop|kick");
                     else if (ply.CW.Game.State == CWGameState.Paused)
-                        builder.Append("resume|stop|kick");
+                        builder.Append("resume|refill|stop|kick");
                     else if (ply.CW.Game.State == CWGameState.GettingClasses)
                         builder.Append("continue|stop|kick");
                 }
