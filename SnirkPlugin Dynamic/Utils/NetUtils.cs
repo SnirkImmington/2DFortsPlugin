@@ -12,9 +12,13 @@ namespace SnirkPlugin_Dynamic
     class NetUtils
     {
         /// <summary>
-        /// The base URL for pastebin's API
+d        /// The base URL for Pastebin's API
         /// </summary>
-        private const string PastebinURL = "pastebin.com/api/api_post.php";
+        private const string PastebinURL = "http://pastebin.com/api/api_post.php";
+        /// <summary>
+        /// The base URL for Dropbox's API
+        /// </summary>
+        private const string DropboxURL = "https://api.dropbox/com/";
 
         public static Dictionary<DateTime, string> ExceptionURLs = new Dictionary<DateTime, string>();
         public static Dictionary<DateTime, string> TraceURLs = new Dictionary<DateTime, string>();
@@ -59,6 +63,16 @@ namespace SnirkPlugin_Dynamic
         }
 
         public static void HostException(Exception ex)
+        {
+            
+        }
+
+        public static void HostCurrentLog()
+        {
+
+        }
+
+        public static void HostFile(string path)
         {
             
         }
