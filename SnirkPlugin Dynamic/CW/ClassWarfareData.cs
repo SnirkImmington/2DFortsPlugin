@@ -9,7 +9,7 @@ namespace SnirkPlugin_Dynamic
     /// <summary>
     /// Class Warfare data for players.
     /// </summary>
-    class ClassWarfareData
+    class CWData
     {
         /// <summary>
         /// The team the player is on.

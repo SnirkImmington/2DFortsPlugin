@@ -57,6 +57,52 @@ namespace SnirkPlugin_Dynamic
     
         public CWGame(PlayerData host)
         {
+            HostID = host.TSPlayer.UserID;
+            State = CWGameState.PreparingTeams;
+        }
+
+        public void SetTeams(CWTeam redTeam, CWTeam blueTeam)
+        {
+
+        }
+
+        public void SetArena(CWArena arena)
+        {
+
+        }
+
+        public void SendPlayersRaw(string message, Color color, params object[] format)
+        {
+
+        }
+
+        public void SendPlayersInfo(string message, params object[] format)
+        {
+
+        }
+
+        public void SendPlayersWarning(string message, params object[] format)
+        {
+            
+        }
+
+        public void SendTeamInfo(int team, string message, params object[] format)
+        {
+
+        }
+
+        public void SendHostInfo(string message, params object[] format)
+        {
+
+        }
+
+        public void SendInvolvedMessage(string message, params object[] format)
+        {
+
+        }
+
+        public void SendInvolvedTeamMessage(string message, params object[] format)
+        {
 
         }
     }
