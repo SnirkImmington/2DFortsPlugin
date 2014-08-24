@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Terraria;
 using TerrariaApi.Server;
 using TShockAPI;
 
@@ -392,7 +394,7 @@ namespace SnirkPlugin_Dynamic
 
         #region General Utils
 
-        [ModCommand("Searches for things. Uses regexes.", "grep")]
+        [ModCommand("Regular expressions form of /search.", "grep")]
         // TODO make this threaded
         public static void Grep(CommandArgs com)
         {
@@ -408,16 +410,20 @@ namespace SnirkPlugin_Dynamic
             // Create regex option to match.
             var matchEx = new Regex(com.Parameters[1], RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled, new TimeSpan(0, 0, 5));
             com.Player.SendInfoMessage("Searching...");
-            var found = new List<string>();
+            var turn = new List<string>();
             switch (com.Parameters[0])
             {
                 case "regions":
                 case "region":
                 case "reg":
+                    foreach (var reg in TShock.Regions.ListAllRegions(Main.worldID.ToString()))
+                        if (matchEx.IsMatch(reg.Name)) turn.Add(reg.Name);
                     break;
 
                 case "warps":
                 case "warp":
+                    foreach (var warp in TShock.Warps.Warps)
+                        if (matchEx.IsMatch(warp.Name)) turn.Add(warp.Name);
                     break;
 
                 case "players":
@@ -426,18 +432,31 @@ namespace SnirkPlugin_Dynamic
                 case "who":
                 case "ply":
                 case "plr":
+                    foreach (var player in TShock.Players)
+                        if (player != null && player.RealPlayer && matchEx.IsMatch(player.Name))
+                            turn.Add(player.Name);
                     break;
 
                 case "warpplate":
                 case "wplate":
+                    
                     break;
 
                 case "admins":
                 case "modmins":
                 case "staff":
+                    foreach (var player in TShock.Players)
+                        if (player != null && player.RealPlayer && player.IsStaff() && matchEx.IsMatch(player.Name))
+                            turn.Add(player.Name);
                     break;
             }
 
+        }
+
+        [BaseCommand("Searches for things.", "search")]
+        public static void Search(CommandArgs com)
+        {
+            // /search warp|player|item|region|warpplate
         }
 
         #endregion
