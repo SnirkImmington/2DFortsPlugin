@@ -54,6 +54,7 @@
     <Compile Include="Advanced\PointArgs.cs" />
     <Compile Include="Commands\GameCommands.cs" />
     <Compile Include="Commands\SnirkCommands.cs" />
+    <Compile Include="Config\CWConfig.cs" />
     <Compile Include="CW\ClassWarfareData.cs" />
     <Compile Include="CW\CWArena.cs" />
     <Compile Include="CW\CWClass.cs" />
