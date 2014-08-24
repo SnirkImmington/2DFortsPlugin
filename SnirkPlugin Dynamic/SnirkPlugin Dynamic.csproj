@@ -56,7 +56,7 @@
     <Compile Include="CW\ClassWarfareData.cs" />
     <Compile Include="CW\CWArena.cs" />
     <Compile Include="CW\CWClass.cs" />
-    <Compile Include="CW\CWGameData.cs" />
+    <Compile Include="CW\CWGame.cs" />
     <Compile Include="CW\CWGameStats.cs" />
     <Compile Include="CW\CWState.cs" />
     <Compile Include="CW\CWTeamData.cs" />
