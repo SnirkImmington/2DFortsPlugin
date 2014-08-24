@@ -1,5 +1,4 @@
 ### Ignore private data class ###
-Utils/Private.cs
 
 
 ## Ignore Visual Studio temporary files, build results, and
@@ -158,3 +157,4 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+/SnirkPlugin Dynamic/Utils/Private.cs
