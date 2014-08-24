@@ -327,10 +327,10 @@ namespace SnirkPlugin_Dynamic
         [ModCommand("Executes /butcher, /rain stop, and /time noon.", "albi", "clearannoyances")]
         public static void AlbiCommand(CommandArgs com)
         {
-            Commands.HandleCommand(com.Player, "butcher");
-            Commands.HandleCommand(com.Player, "rain stop");
-            Commands.HandleCommand(com.Player, "time noon");
-            Commands.HandleCommand(com.Player, "sslap {0} 5".SFormat(com.Player.Name));
+            Commands.HandleCommand(com.Player, "/butcher");
+            Commands.HandleCommand(com.Player, "/rain stop");
+            Commands.HandleCommand(com.Player, "/time noon");
+            Commands.HandleCommand(com.Player, "/sslap {0} 5".SFormat(com.Player.Name));
             com.Player.SendInfoMessage("Removed annoyances. This was Ren's idea.");
         }
 
