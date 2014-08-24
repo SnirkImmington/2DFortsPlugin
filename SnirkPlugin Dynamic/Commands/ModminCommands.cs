@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TerrariaApi.Server;
 using TShockAPI;
 
 namespace SnirkPlugin_Dynamic
@@ -79,6 +80,22 @@ namespace SnirkPlugin_Dynamic
             Console.WriteLine(com.Player.Name + " used /spam " + com.Message);
         }
 
+        // I AM SO SORRY I WAS BORED, MAN, REALLY BORED
+        // and I promise not intoxicated
+        [ModCommand("Sings the theme song of a player", "themesong")]
+        public static void ThemeSong(CommandArgs com)
+        {
+            var parser = new CommandParser(com, "Usage: /themesong <player> - this is a dumb command.");
+            var player = parser.ParsePlayer(); if (player == null) return;
+            if (!player.TPlayer.male)
+            {
+                com.Player.SendErrorMessage("Themesong lyrics don't femenize, so we can't sing a theme song with a female Terrarian. Sorry.");
+                return;
+            }
+
+            (new Thread(Themesong)).Start(new SpamArgs(com.Player, player.Name, player.Name));
+        }
+
         [ModCommand("Spams text at a person.", "wspam", "ws")]
         public static void WSpam(CommandArgs com)
         {
@@ -95,6 +112,37 @@ namespace SnirkPlugin_Dynamic
         }
 
         #region Spam Implementation
+
+        public static void Themesong(object args)
+        {
+            try
+            {
+                var themeArgs = (SpamArgs)args;
+
+                // Oscaaaaar!
+                SendLine(themeArgs, "iiiits {0}");
+                Thread.Sleep(TimeSpan.FromSeconds(13));
+                SendLine(themeArgs, "dun dun dun dundunun dun dun {0}");
+                Thread.Sleep(TimeSpan.FromSeconds(17));
+                SendLine(themeArgs, "is he George? Nope! he's {0}");
+                Thread.Sleep(TimeSpan.FromSeconds(9));
+                SendLine(themeArgs, "is he Michael? Nope! he's {0}");
+                Thread.Sleep(TimeSpan.FromSeconds(14));
+                SendLine(themeArgs, "if you wanna know a {0} he's your guy");
+                Thread.Sleep(TimeSpan.FromSeconds(14));
+                SendLine(themeArgs, "{0} {0}! He's quite the {0} type");
+                Thread.Sleep(TimeSpan.FromSeconds(17));
+                SendLine(themeArgs, "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiits {0}!!!1!!11!");
+            }
+            catch { } // Not gonna try to log exceptions in a multithreaded environment
+        }
+        private static void SendLine(SpamArgs args, string line)
+        {
+            TSPlayer.All.SendMessage(TShock.Config.ChatFormat.SFormat(
+                args.Target.Group.Prefix, args.Target.Name, args.Target.Group.Suffix,
+                line.SFormat(args.Message)), Color.Firebrick);
+        }
+
         public static void Spam(object args)
         {
             var spam = (SpamArgs)args;
@@ -118,6 +166,7 @@ namespace SnirkPlugin_Dynamic
                 Target = target; Host = host; Message = message;
             }
         }
+       
         #endregion
 
         #endregion
