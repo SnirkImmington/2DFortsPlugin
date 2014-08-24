@@ -41,6 +41,14 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         Playing,
         /// <summary>
+        /// 3.25/4: Paused
+        /// <para>If the CW game is paused, all the players are teleported/killed back to the spawn zones.
+        /// The arenas should close back up so players can't get in.</para>
+        /// <para>The stage ends with the host or mod using /cw resume.</para>
+        /// <para>Players should remain in the playing stage.</para>
+        /// </summary>
+        Paused,
+        /// <summary>
         /// 4/4: Cleaning Up
         /// <para>In this stage, players are awarded plorts for playing and are
         /// warped to cw. The game statistics are also saved.</para>
