@@ -44,6 +44,11 @@ namespace SnirkPlugin_Dynamic
         public Region[] BlueTiles { get; private set; }
 
         /// <summary>
+        /// The regions that are used for observation.
+        /// </summary>
+        public Region[] ObservationRegion { get; private set; }
+
+        /// <summary>
         /// The maximum number of red tiles to mine.
         /// </summary>
         public int MaxRed { get; private set; }

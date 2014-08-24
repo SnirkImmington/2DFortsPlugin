@@ -35,6 +35,11 @@ namespace SnirkPlugin_Dynamic
         public CWGameStats Stats { get; private set; }
 
         /// <summary>
+        /// The players subscribed to the game details.
+        /// </summary>
+        public List<string> WatchingPlayers;
+
+        /// <summary>
         /// Called every second while the game is in session.
         /// </summary>
         public void OnSecond()
