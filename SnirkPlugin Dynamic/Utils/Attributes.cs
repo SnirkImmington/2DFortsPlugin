@@ -54,9 +54,13 @@ namespace SnirkPlugin_Dynamic
         }
     }
 
-    class DonorCommandAtribute : BaseCommandAttribute
+    /// <summary>
+    /// Attribute for commands for donors.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple=false)]
+    class DonorCommandAttribute : BaseCommandAttribute
     {
-        public DonorCommandAtribute(string description, params string[] names)
+        public DonorCommandAttribute(string description, params string[] names)
             : base(ComUtils.DonorPermission, description, names) { }
     }
 
