@@ -31,7 +31,10 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public static bool InitFinished = false;
 
-        public static List<CWGame> Games;
+        /// <summary>
+        /// Currently running CW games.
+        /// </summary>
+        public static List<CWGame> CWGames;
 
         /// <summary>
         /// "Main" method called reflectively.
@@ -41,7 +44,7 @@ namespace SnirkPlugin_Dynamic
         {
             #region Initialize Variables
             Players = new PlayerData[Main.maxPlayers];
-            Games = new List<CWGame>();
+            CWGames = new List<CWGame>();
             // TODO this is called with null
             PluginCaller = caller;
 
@@ -83,9 +86,51 @@ namespace SnirkPlugin_Dynamic
 
         #region Events
 
-        private static void OnSecond()
+        private static void OnSecond(int seconds)
         {
+            foreach (var game in CWGames)
+            {
+                if (game == null) continue;
+                switch (game.State)
+                {
+                    case CWGameState.PreparingTeams:
+                        // Keep track of players in the startup zone
+                        // Make list of different types and positions
+                        // Remove or ignore non-fresh players
+                        // Tell host if configurations change
+                        // Tell players for invalid miner configurations/etc
+                        // Make sure everyone's joined the proper teams
+                        // Continue command includes arena choice
+                        break;
 
+                    case CWGameState.GettingClasses:
+                        // Check player for having classes
+                        // Players with classes:
+                        // Tell to enable PvP (once outside the choose room)
+                        // Check for players in arenas?
+                        break;
+
+                    case CWGameState.Playing:
+                        // Check the arena's mined tiles and stuff
+                        // If the game ends broadcast scores and clean up
+                        // Check players' classes for hacked items
+                        // Maybe every minute send the score to people?
+                        break;
+
+                    case CWGameState.CleaningUp:
+                        // I dunno how I'm gonna thread doing cleanup
+                        break;
+                }
+            }
+
+            for (int i = 0; i < Players.Length; i++)
+            {
+                if (Players[i] == null) continue;
+
+                #region CW Update
+
+                #endregion
+            }
         }
 
         private static void OnJoin(JoinEventArgs args)
