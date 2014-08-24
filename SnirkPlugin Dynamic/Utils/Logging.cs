@@ -18,7 +18,7 @@ namespace SnirkPlugin_Dynamic
         /// <summary>
         /// The StreamWriter that writes to the logs.
         /// </summary>
-        private static StreamWriter BasicWriter;
+        private static StreamWriter LogWriter;
 
         /// <summary>
         /// Seperate writer for trace files.
@@ -27,9 +27,9 @@ namespace SnirkPlugin_Dynamic
 
         public static void Init(bool startup)
         {
-            BasicWriter = new StreamWriter(File.OpenWrite(
+            LogWriter = new StreamWriter(File.OpenWrite(
                 Path.Combine(Paths.LogsFolder, DateTime.Now.ToString("dd-mm-hh MM") + ".txt")));
-            BasicWriter.WriteLine("Plugin's log, date " + DateTime.Now + ".");
+            LogWriter.WriteLine("Plugin's log, date " + DateTime.Now + ".");
 
             TraceWriter = new StreamWriter(File.OpenWrite(
                 Path.Combine(Paths.LogsFolder, "")));
@@ -37,8 +37,8 @@ namespace SnirkPlugin_Dynamic
 
         public static void Dispose(bool startup)
         {
-            BasicWriter.WriteLine("=== End Transmission - {0} ===".SFormat(startup ? "plugin refresh" : "server restart"));
-            BasicWriter.Dispose();
+            LogWriter.WriteLine("=== End Transmission - {0} ===".SFormat(startup ? "plugin refresh" : "server restart"));
+            LogWriter.Dispose();
         }
 
         #endregion
@@ -127,7 +127,7 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public static Task Data(string message)
         {
-            return BasicWriter.WriteLineAsync(MainUtils.GetNow.ToString("HH:mm:ss") + " - " + message);
+            return LogWriter.WriteLineAsync(MainUtils.GetNow.ToString("HH:mm:ss") + " - " + message);
         }
         /// <summary>
         /// Writes a formatted message to the log asynchronously
