@@ -6,10 +6,22 @@ using System.Threading.Tasks;
 
 namespace SnirkPlugin_Dynamic
 {
+    /// <summary>
+    /// Class Warfare data for players.
+    /// </summary>
     class ClassWarfareData
     {
+        /// <summary>
+        /// The team the player is on.
+        /// </summary>
         public CWTeam Team;
-
-        public bool Miner;
+        /// <summary>
+        /// The CWClass the player is in.
+        /// </summary>
+        public CWClass Class;
+        /// <summary>
+        /// The CWGame the player is in.
+        /// </summary>
+        public CWGame Game;
     }
 }

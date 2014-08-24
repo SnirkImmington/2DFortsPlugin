@@ -73,6 +73,15 @@ namespace SnirkPlugin_Dynamic
 
         #endregion
 
+        #region Class Warfare
+        
+        /// <summary>
+        /// Player specific Class Warfare data.
+        /// </summary>
+        public ClassWarfareData CW;
+
+        #endregion
+
         #region Persistance
 
         /// <summary>
