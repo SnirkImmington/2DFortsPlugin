@@ -71,6 +71,15 @@ namespace SnirkPlugin_Dynamic
             return TSPlayer.Group.HasPermission(ComUtils.ModPermission) || TSPlayer.Group.HasPermission(ComUtils.AdminPermission);
         }
 
+        /// <summary>
+        /// Determines whether this player is a donor.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsDonor
+        {
+            get { return TSPlayer.Group.Name.EndsWith("Donor"); }
+        }
+
         #endregion
 
         #region Class Warfare

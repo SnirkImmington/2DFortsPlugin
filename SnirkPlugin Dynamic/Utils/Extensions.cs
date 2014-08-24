@@ -43,8 +43,16 @@ namespace SnirkPlugin_Dynamic
         /// <returns>Whether the player is an admin or moderator.</returns>
         public static bool IsStaff(this TSPlayer ply, bool onlyAdmin = false)
         {
-            if (onlyAdmin) return ply.Group.HasPermission("2dforts.admin");
-            return ply.Group.HasPermission("2dforts.mod") || ply.Group.HasPermission("2dforts.admin");
+            if (onlyAdmin) return ply.Group.HasPermission(ComUtils.AdminPermission);
+            return ply.Group.HasPermission(ComUtils.ModPermission) || ply.Group.HasPermission(ComUtils.AdminPermission);
+        }
+
+        /// <summary>
+        /// Determines whether this player is a donor.
+        /// </summary>
+        public static bool IsDonor(this TSPlayer ply)
+        {
+            return ply.Group.Name.EndsWith("Donor");
         }
 
         #endregion
