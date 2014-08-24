@@ -7,32 +7,6 @@ using System.Threading.Tasks;
 namespace SnirkPlugin_Dynamic
 {
     /// <summary>
-    /// Data that persists with a GUID.
-    /// </summary>
-    class PlayerPersistantData
-    {
-        /// <summary>
-        /// If the player is not allowed to use caps lock.
-        /// </summary>
-        public bool NoCaps;
-
-        /// <summary>
-        /// If the player is disabled.
-        /// </summary>
-        public bool Disabled;
-
-        public bool ShouldWrite
-        { get { return NoCaps | Disabled; } }
-
-        public PlayerPersistantData(bool caps, bool command, bool disabled, 
-            bool danger)
-        {
-            NoCaps = caps; 
-            Disabled = disabled;
-        }
-    }
-
-    /// <summary>
     /// Data that persists with a User ID.
     /// </summary>
     class UserPersistantData

@@ -101,10 +101,6 @@ namespace SnirkPlugin_Dynamic
         /// User account tracked data.
         /// </summary>
         public UserPersistantData UserData;
-        /// <summary>
-        /// Player GUID tracked data.
-        /// </summary>
-        public PlayerPersistantData PlayerData;
 
         #endregion
 
