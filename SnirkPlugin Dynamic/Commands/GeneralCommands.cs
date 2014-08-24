@@ -27,12 +27,15 @@ namespace SnirkPlugin_Dynamic
         [BaseCommand(Permissions.canchat, "Finds things nearby.", "nearby", "local", "near", "find")]
         public static void Nearby(CommandArgs com)
         {
+            // /nearby <type> [dist] [page]
             var parser = new CommandParser(com,
-                "Usage: /nearby warp{0} - find things nearby".SFormat(com.Player.IsStaff() ? "|region|player|modmin|warpplate|point" : ""));
+                "Usage: /nearby warp{0} [distance] [page] - find things nearby".SFormat(com.Player.IsStaff() ? "|region|player|modmin|warpplate|point" : ""));
 
+            // Get first param using parser, why not
             var param = parser.PopParameter(); if (param == "") return;
             if (param[param.Length - 2] == 's') param = param.Substring(0, param.Length - 2);
 
+            // Get distance from parser
             int distance = 50;
             if (com.Parameters.Count > 1)
             {
@@ -41,6 +44,8 @@ namespace SnirkPlugin_Dynamic
                 if (parseDistance.Value < 0) com.Player.SendErrorMessage("You can't have negative distance, dude.");
                 distance = parseDistance.Value;
             }
+            
+            // Get page from parser
             int page = 1;
             if (com.Parameters.Count > 2)
             {
@@ -50,8 +55,10 @@ namespace SnirkPlugin_Dynamic
                 page = parsePage.Value;
             }
 
+            // Switch the type
             switch (param.ToLower())
             {
+                #region case "warp":
                 case "warp":
                 case "wp":
                     // Such Linq much fancy very .NET so SQL
@@ -69,7 +76,9 @@ namespace SnirkPlugin_Dynamic
                             NothingToDisplayString = "No players found!"
                         });
                     return;
+                #endregion
 
+                #region case "player":
                 case "ply":
                 case "player":
                     if (!com.Player.IsStaff()) { parser.SendUsage(); return; }
@@ -88,7 +97,9 @@ namespace SnirkPlugin_Dynamic
                             NothingToDisplayString = "There are currently no players nearby."
                         });
                     return;
+                #endregion
 
+                #region case "modmin"
                 case "modmin":
                 case "mod":
                 case "staff":
@@ -105,7 +116,9 @@ namespace SnirkPlugin_Dynamic
                             NothingToDisplayString = "There are currently no staff nearby."
                         });
                     return;
+                #endregion
 
+                #region case "region":
                 case "region":
                 case "reg":
                     if (!com.Player.IsStaff()) { parser.SendUsage(); return; }
@@ -123,12 +136,16 @@ namespace SnirkPlugin_Dynamic
                             NothingToDisplayString = "There are currently no regions nearby."
                         });
                     return;
+                #endregion
 
+                #region case "warpplate"
                 case "warpplate":
                 case "wplate":
                     if (!com.Player.IsStaff()) { parser.SendUsage(); return; }
                     return;
+                #endregion
 
+                #region case "userpoint"
                 case "point":
                 case "userpoint":
                     if (!com.Player.IsStaff()) { parser.SendUsage(); return; }
@@ -145,6 +162,10 @@ namespace SnirkPlugin_Dynamic
                             NothingToDisplayString = "You don't have any defined points nearby."
                         });
                     return;
+                #endregion
+            
+                default:
+                    parser.SendUsage(); return;
             }
         }
 
