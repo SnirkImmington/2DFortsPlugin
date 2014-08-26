@@ -177,6 +177,24 @@ namespace SnirkPlugin_Dynamic
 
         }
 
+        /// <summary>
+        /// Teleports the player to the CW position they should be at.
+        /// </summary>
+        public void TeleportCW()
+        {
+            // If no team
+            if (CW == null || CW.Game == null || CW.Game.Arena == null)
+            {
+                TSPlayer.Teleport(CWConfig.CWStartCoords.X, CWConfig.CWStartCoords.Y);
+                TSPlayer.SendSuccessMessage("You have been teleported to the starting position for CW!"); return;
+            }
+            // else is on a team
+            if (CW.Observing != null)
+            {
+
+            }
+        }
+
         #endregion
 
         /// <summary>
