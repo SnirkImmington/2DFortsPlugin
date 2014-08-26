@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TShockAPI.DB;
 
 namespace SnirkPlugin_Dynamic
 {
@@ -23,5 +24,15 @@ namespace SnirkPlugin_Dynamic
         /// The color of all red team messages.
         /// </summary>
         public static Color RedTeamColor = Color.OrangeRed;
+
+        /// <summary>
+        /// The warp to send players to join in CW
+        /// </summary>
+        public static Vector2 CWStartCoords; // = "cw";
+        /// <summary>
+        /// The warp formatted by arena number for observers
+        /// </summary>
+        public static string CWObserveWarpFormat = "cw{0}";
+
     }
 }
