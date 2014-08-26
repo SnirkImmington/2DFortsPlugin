@@ -15,6 +15,10 @@ namespace SnirkPlugin_Dynamic
         /// The User ID of the host.
         /// </summary>
         public int HostID { get; private set; }
+        /// <summary>
+        /// The arena the CW game is hosted at.
+        /// </summary>
+        public CWArena Arena { get; private set; }
 
         /// <summary>
         /// The red team.
