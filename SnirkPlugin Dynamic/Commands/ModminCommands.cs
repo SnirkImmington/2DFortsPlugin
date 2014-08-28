@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -354,7 +355,7 @@ namespace SnirkPlugin_Dynamic
             // ssm <ID>|help [amount] [location] [range[x]] [rangey]
 
             var parser = new CommandParser(com, "/ssm <name/ID> [amount] [point] [range] [rangey] (PointArgs) (smart) - see /ssm help");
-            if (parser.AssertParam()) return;
+            if (!parser.AssertParam()) return;
 
             if (com.Parameters[0] == "help")
             {
@@ -367,6 +368,8 @@ namespace SnirkPlugin_Dynamic
             if (monster == null) return;
             int amount = 1, rangeX = 25, rangeY = 50; ITarget target = new PlayerTarget(com.Player);
 
+            // I am aware that this code does 4 more if checks than it needs to worst case scenario.
+            // Unfortunately this devastating inefficiency reduces it from O(1) to O(1) time.
             if (parser.Scroll())
             {
                 var tryAmount = parser.ParseInt("mob count", 0, 201); 
@@ -393,11 +396,27 @@ namespace SnirkPlugin_Dynamic
                 rangeY = tryY.Value * 2;
             }
 
+            // Now that we have the args, spawn the monsters.
             TSPlayer.Server.SpawnNPC(monster.type, monster.displayName, amount, 
                 (int)target.GetX()/16, (int)target.GetY()/16, rangeX * 2, rangeY * 2);
             TSPlayer.All.SendSuccessMessage("{0} has been spawned {1} {2} {3} at {4} by {5}! ({6} x {7})",
                 monster.displayName, amount, ComUtils.Pluralize(amount, "time"),
                 target.GetInfo(), com.Player.Name, rangeX, rangeY);
+        }
+
+        //[ModCommand("Spawns swarms of monsters!", "swarm", "mobswarm")]
+        public static void Swarm(CommandArgs com)
+        {
+            // swarm <type|mob> [pointargs] [amount:rand(10-20)] [waves:rand(5-10)] [IDelay:wait|randDelay(15,35)|rand(15,35)]
+            // Smart swarms that continue with x mobs left
+            // Smart swarms that adjust spawns for difficulty
+            // Smart swarms that learn how difficult they are to beat
+
+            // swarp <type|mob> [pointargs] [amount:rand(10-20)] [waves:rand(5-10)] [delay:rand(10-15)]
+            var parser = new CommandParser(com, "Usage: /swarm <mob|type> [point] [wave#] [delay seconds] - see /swarm help.");
+            if (!parser.AssertParam()) return;
+
+            var mob = 
         }
 
         #endregion
