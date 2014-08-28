@@ -180,6 +180,15 @@ namespace SnirkPlugin_Dynamic
         #region Scrolling
 
         /// <summary>
+        /// Determines whether the current parameter exists.
+        /// </summary>
+        public bool AssertParam()
+        {
+            if (ParamIndex >= com.Parameters.Count) return false;
+            return true;
+        }
+
+        /// <summary>
         /// Gets the argument at the current index.
         /// </summary>
         public string GetCurrent()
