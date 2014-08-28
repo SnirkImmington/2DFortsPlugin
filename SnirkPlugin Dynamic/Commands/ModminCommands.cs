@@ -353,10 +353,10 @@ namespace SnirkPlugin_Dynamic
         public static void SSM(CommandArgs com)
         {
             // ssm <ID>|help [amount] [location] [range[x]] [rangey]
-
             var parser = new CommandParser(com, "/ssm <name/ID> [amount] [point] [range] [rangey] (PointArgs) (smart) - see /ssm help");
             if (!parser.AssertParam()) return;
 
+            // Help text
             if (com.Parameters[0] == "help")
             {
                 com.Player.SendInfoMessage("TShock's mob-spawning code uses a CENTRAL POINT and a RADIUS around it to spawn mobs.");
@@ -364,39 +364,38 @@ namespace SnirkPlugin_Dynamic
                 com.Player.SendInfoMessage("You can specify the radius after the location (smart), and the range. Adding another number gets you x and y range.");
                 return;
             }
+
+            // Parse the monster
             var monster = parser.Parse(true, "monster", TShock.Utils.GetNPCByIdOrName);
             if (monster == null) return;
             int amount = 1, rangeX = 25, rangeY = 50; ITarget target = new PlayerTarget(com.Player);
+            if (!parser.Scroll()) goto Spawning;
 
-            // I am aware that this code does 4 more if checks than it needs to worst case scenario.
-            // Unfortunately this devastating inefficiency reduces it from O(1) to O(1) time.
-            if (parser.Scroll())
-            {
-                var tryAmount = parser.ParseInt("mob count", 0, 201); 
-                if (!tryAmount.HasValue) return;
-                amount = tryAmount.Value;
-            }
-            if (parser.Scroll())
-            {
-                var location = parser.Parse(true, "No PointArgs found!", s => Parse.Target(s, com.FPlayer()));
-                if (!location.HasValue) return;
-                target = location.Value;
-            }
-            if (parser.Scroll())
-            {
-                var tryRange = parser.ParseInt("range", 0, 201);
-                if (!tryRange.HasValue) return;
-                // Set things to * 2 to convert square radius to side
-                rangeX = tryRange.Value * 2; rangeY = tryRange.Value * 2;
-            }
-            if (parser.Scroll())
-            {
-                var tryY = parser.ParseInt("range Y!", 0, 201);
-                if (!tryY.HasValue) return;
-                rangeY = tryY.Value * 2;
-            }
+            // Parse the mob amount
+            var tryAmount = parser.ParseInt("mob count", 0, 201); 
+            if (!tryAmount.HasValue) return;
+            amount = tryAmount.Value;
+            if (!parser.Scroll()) goto Spawning;
 
-            // Now that we have the args, spawn the monsters.
+            // Parse the location
+            var location = parser.Parse(true, "No PointArgs found!", s => Parse.Target(s, com.FPlayer()));
+            if (!location.HasValue) return;
+            target = location.Value;
+            if (!parser.Scroll()) goto Spawning;
+
+            // Parse the range
+            var tryRange = parser.ParseInt("range", 0, 201);
+            if (!tryRange.HasValue) return;
+            // Set things to * 2 to convert square radius to side
+            rangeX = tryRange.Value * 2; rangeY = tryRange.Value * 2;
+            if (parser.Scroll()) goto Spawning;
+            
+            // Parse the Y range
+            var tryY = parser.ParseInt("range Y!", 0, 201);
+            if (!tryY.HasValue) return;
+            rangeY = tryY.Value * 2;
+            
+            Spawning: // called when everything parseable has been parsed
             TSPlayer.Server.SpawnNPC(monster.type, monster.displayName, amount, 
                 (int)target.GetX()/16, (int)target.GetY()/16, rangeX * 2, rangeY * 2);
             TSPlayer.All.SendSuccessMessage("{0} has been spawned {1} {2} {3} at {4} by {5}! ({6} x {7})",
