@@ -103,7 +103,7 @@ namespace SnirkPlugin_Dynamic
         };
         #endregion
 
-        #region public const string[] SlapMessages = new string[]
+        #region public const string[] SlapMessages = new string[] { }
         public const string[] SlapMessages = new string[] 
         {
             "was slapped silly.",
@@ -135,6 +135,8 @@ namespace SnirkPlugin_Dynamic
         #endregion
 
         #region Used in commands
+
+        #region Text
 
         /// <summary>
         /// Creates a gender-style string based on a player's gender.
@@ -196,6 +198,44 @@ namespace SnirkPlugin_Dynamic
             }
             return text + "s";
         }
+        
+        /// <summary>
+        /// Used for teleports possibly involving three players.
+        /// </summary>
+        public static string TeleportString(TSPlayer teller, TSPlayer p1, TSPlayer p2)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (p1.Index == teller.Index)
+                sb.Append("Switched you with ");
+            else sb.Append("Switched " + p1.Name + " with ");
+
+            if (p2.Index == teller.Index && p1.Index == teller.Index)
+                sb.Append("yourself!");
+            else if (p2.Index == teller.Index)
+                sb.Append("you!");
+            else // other player
+                sb.Append(p2.Name + "!");
+
+            return sb.ToString();
+        }
+
+        #endregion
+
+        #region Swarm
+
+        /// <summary>
+        /// Method for swarming lots of mobs around a player
+        /// </summary>
+        /// <param name="objArgs"></param>
+        public static void Swarm(object objArgs)
+        {
+
+        }
+
+        #endregion
+
+        #region Other
 
         /// <summary>
         /// Sends text properly in AutoGC form using a group.
@@ -228,33 +268,23 @@ namespace SnirkPlugin_Dynamic
             NetMessage.SendData((int)PacketTypes.PlayerDamage, PvPDamage ? ply.Index : -1, -1,
                 " " + reason, ply.Index, 1, damage);
         }
+        
+        #endregion
 
-        /// <summary>
-        /// Used for teleports possibly involving three players.
-        /// </summary>
-        public static string TeleportString(TSPlayer teller, TSPlayer p1, TSPlayer p2)
+        #endregion
+
+        #region Display statistics
+
+        public static string[] GetClassInfo(CWClass Class)
         {
-            StringBuilder sb = new StringBuilder();
 
-            if (p1.Index == teller.Index)
-                sb.Append("Switched you with ");
-            else sb.Append("Switched " + p1.Name + " with ");
-
-            if (p2.Index == teller.Index && p1.Index == teller.Index)
-                sb.Append("yourself!");
-            else if (p2.Index == teller.Index)
-                sb.Append("you!");
-            else // other player
-                sb.Append(p2.Name + "!");
-
-            return sb.ToString();
         }
 
         #endregion
 
         #region Snirk-specific
 
-        
+
 
         #endregion
     }
