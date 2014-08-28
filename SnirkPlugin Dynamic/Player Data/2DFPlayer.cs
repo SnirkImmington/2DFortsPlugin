@@ -188,10 +188,12 @@ namespace SnirkPlugin_Dynamic
                 TSPlayer.Teleport(CWConfig.CWStartCoords.X, CWConfig.CWStartCoords.Y);
                 TSPlayer.SendSuccessMessage("You have been teleported to the starting position for CW!"); return;
             }
-            // else is on a team
+            // else is observing
             if (CW.Observing != null)
             {
-
+                var dest = CW.Observing.Arena.SpawnObserver;
+                TSPlayer.Teleport(dest.X, dest.Y);
+                TSPlayer.SendSuccessMessage("You have been teleported to the observation platform of your watched CW arena!"); return;
             }
         }
 
