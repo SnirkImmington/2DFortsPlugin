@@ -29,11 +29,6 @@ namespace SnirkPlugin_Dynamic
 
         #region Parsing
 
-        // Idea: allow assimilation of strings directly
-        // and dynamically based on parsing methods
-        // to prevent the need for quotes and escaping.
-        //public int CharacterIndex { get; private set; }
-
         /// <summary>
         /// Parses an object given a function to create a list, and moves the index over
         /// the used param(s).
@@ -160,6 +155,55 @@ namespace SnirkPlugin_Dynamic
         }
 
         /// <summary>
+        /// Generic integer parser method.
+        /// </summary>
+        /// <param name="type">The type for the error message, "Invalid number for {type}!"</param>
+        /// <returns>A generically parsed int.</returns>
+        public int? ParseInt(string type)
+        {
+            return Parse(false, "Invalid number for " + type + '!', int.Parse);
+        }
+
+        /// <summary>
+        /// Int parser with minimum, errors or clamps.
+        /// </summary>
+        /// <param name="type">The type to use in error messages (from ParseInt(type) and "Number x must be greater than {type}!"</param>
+        /// <param name="minclusive">The inclusive minimum value - input &lt;= this will error.</param>
+        /// <param name="sendError">Whether to send error messages to the player for small numbers or just clamp them.</param>
+        /// <returns>A minimally parsed integer.</returns>
+        public int? ParseInt(string type, int minclusive, bool sendError = false)
+        {
+            var turn = ParseInt(type);
+            if (!turn.HasValue) return null; // error handled in ParseInt(type)
+            if (turn.Value <= minclusive)
+            {
+                if (sendError) { com.Player.SendErrorMessage("Number for {0} must be greater than {1}!", type, minclusive); return null; }
+                else return minclusive - 1;
+            }
+            return turn;
+        }
+
+        /// <summary>
+        /// Int parser with minimum/maximum, errors/clamps.
+        /// </summary>        
+        /// <param name="type">The type to use in error messages (from ParseInt(type) and "Number x must be greater than {type}!"</param>
+        /// <param name="minclusive">The inclusive minimum value - input &lt;= this will error.</param>
+        /// <param name="maxclusive">The inclusive maximum value - input &gt;= this will error.</param>
+        /// <param name="sendError">Whether to send error messages to the player for small numbers or just clamp them.</param>
+        /// <returns>A minimally parsed integer.</returns>
+        public int? ParseInt(string type, int minclusive, int maxclusive, bool sendError = false)
+        {
+            var turn = ParseInt(type, minclusive, sendError);
+            if (!turn.HasValue) return null; // error and min handled in ParseInt(type, min, sendError)
+            if (turn.Value >= maxclusive)
+            {
+                if (sendError) { com.Player.SendErrorMessage("Number for {0} must be less than {1}!", type, maxclusive); return null; }
+                else return maxclusive - 1;
+            }
+            return turn;
+        }
+
+        /// <summary>
         /// Gets the next parameter in line and moves forward.
         /// Returns "" and does not move if there are none left.
         /// </summary>
@@ -182,9 +226,10 @@ namespace SnirkPlugin_Dynamic
         /// <summary>
         /// Determines whether the current parameter exists.
         /// </summary>
-        public bool AssertParam()
+        public bool AssertParam(bool usage = true)
         {
-            if (ParamIndex >= com.Parameters.Count) return false;
+            if (ParamIndex < com.Parameters.Count) return true;
+            if (usage) SendUsage();
             return true;
         }
 
@@ -249,7 +294,7 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         /// <param name="paramCount">The number of params to move forward</param>
         /// <param name="errorUsage">Whether to send the usage message if it fails.</param>
-        public bool Scroll(int paramCount = 1, bool errorUsage = true)
+        public bool Scroll(int paramCount = 1, bool errorUsage = false)
         {
             for (int i = 0; i <paramCount; i++)
             {
