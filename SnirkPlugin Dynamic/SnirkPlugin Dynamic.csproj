@@ -63,6 +63,7 @@
     <Compile Include="CW\CWState.cs" />
     <Compile Include="CW\CWTeamData.cs" />
     <Compile Include="CW\GameStatistics.cs" />
+    <Compile Include="Database\SwarmData.cs" />
     <Compile Include="Database\UserPoint.cs" />
     <Compile Include="Player Data\2DFPlayer.cs" />
     <Compile Include="Commands\GeneralCommands.cs" />
