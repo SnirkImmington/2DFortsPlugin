@@ -346,6 +346,70 @@ namespace SnirkPlugin_Dynamic
 
         #endregion
 
+        #region Mobs
+
+        [ModCommand("Spawns mobs in an awesome way!", "spawnmob", "sm", "superspawnmob", "ssm")]
+        public static void SSM(CommandArgs com)
+        {
+            // ssm <ID>|help [amount] [location] [range[x]] [rangey]
+
+            var parser = new CommandParser(com, "/ssm <name/ID> [amount] [point] [range] [rangey] (PointArgs) (smart) - see /ssm help");
+            if (parser.AssertParam()) return;
+
+            if (com.Parameters[0] == "help")
+            {
+                com.Player.SendInfoMessage("TShock's mob-spawning code uses a CENTRAL POINT and a RADIUS around it to spawn mobs.");
+                com.Player.SendInfoMessage("You can specify the point using Smart PointArgs. For more info on these see /snirk help ssm.");
+                com.Player.SendInfoMessage("You can specify the radius after the location (smart), and the range. Adding another number gets you x and y range.");
+                return;
+            }
+            var monster = parser.Parse(true, "monster", TShock.Utils.GetNPCByIdOrName);
+            if (monster == null) return;
+            int amount = 1, rangeX = 25, rangeY = 50; ITarget target = new PlayerTarget(com.Player);
+
+            if (parser.Scroll())
+            {
+                var tryAmount = parser.Parse(false, "Invalid amount!", int.Parse);
+                if (!tryAmount.HasValue) return;
+                if (tryAmount.Value < 0) { com.Player.SendErrorMessage("You can't spawn negative amounts of monsters!"); }
+                if (tryAmount.Value == 0) { com.Player.SendErrorMessage("You can't spawn zero of something..."); return; }
+                if (tryAmount.Value > 200) { com.Player.SendErrorMessage("You can't spawn more than 200 of something!"); return; }
+                amount = tryAmount.Value;
+            }
+            if (parser.Scroll())
+            {
+                var location = parser.Parse(true, "No PointArgs found!", s => Parse.Target(s, com.FPlayer()));
+                if (!location.HasValue) return;
+                target = location.Value;
+            }
+            if (parser.Scroll())
+            {
+                var tryRange = parser.Parse(false, "Invalid range!", int.Parse);
+                if (!tryRange.HasValue) return;
+                if (tryRange.Value < 0) { com.Player.SendErrorMessage("You can't spawn mobs over a negative range, dude."); return; }
+                if (tryRange.Value > 200) { com.Player.SendErrorMessage("You can't spawn mobs over a range greater than 200!"); return; }
+                // Set things to * 2 to convert square radius to side
+                rangeX = tryRange.Value * 2; rangeY = tryRange.Value * 2;
+            }
+            if (parser.Scroll())
+            {
+                var tryY = parser.Parse(false, "Invalid range Y!", int.Parse);
+                if (!tryY.HasValue) return;
+                if (tryY.Value < 0) { com.Player.SendErrorMessage("You can't spawn mobs over a negative Y range, man."); return; }
+                if (tryY.Value > 200) { com.Player.SendErrorMessage("You can't spawn mobs over a range greater than 200!"); return; }
+
+                rangeY = tryY.Value * 2;
+            }
+
+            TSPlayer.Server.SpawnNPC(monster.type, monster.displayName, amount, 
+                (int)target.GetX()/16, (int)target.GetY()/16, rangeX * 2, rangeY * 2);
+            TSPlayer.All.SendSuccessMessage("{0} has been spawned {1} {2} {3} at {4} by {5}! ({6} x {7})",
+                monster.displayName, amount, ComUtils.Pluralize(amount, "time"),
+                target.GetInfo(), com.Player.Name, rangeX, rangeY);
+        }
+
+        #endregion
+
         #region Hidden and invisible
 
         [ModCommand("Executes a command as \"An Admin\".", "annon")]
