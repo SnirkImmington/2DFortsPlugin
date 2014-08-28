@@ -45,21 +45,43 @@ namespace SnirkPlugin_Dynamic
     }
 
     /// <summary>
+    /// A mob swarm with only one mob in it.
+    /// </summary>
+    class SingleSwarm : MobSwarm
+    {
+        /// <summary>
+        /// The mob found in the swarm.
+        /// </summary>
+        public NPC Mob { get; private set; }
+
+        /// <summary>
+        /// Spawns one mob a lot.
+        /// </summary>
+        public override SpawnArgs[] SpawnWave(int spawnCout, int wave, int maxWaves, List<TSPlayer> players, int range, int difficulty)
+        {
+            return new SpawnArgs[] { new SpawnArgs(Mob, spawnCout, new Point(0, 0), range, range) };
+        }
+
+        /// <summary>
+        /// Constructor with a mob to use
+        /// </summary>
+        public SingleSwarm(NPC mob) : base(mob.displayName)
+        {
+            Mob = mob;
+        }
+    }
+
+    /// <summary>
     /// Basic swarm class: has array of ints for swarm data.
     /// </summary>
     class BasicSwarm : MobSwarm
     {
         /// <summary>
-        /// How difficult the swarm is to beat.
-        /// </summary>
-        public int Difficulty { get; private set; }
-
-        /// <summary>
         /// The IDs of the basic mobs to spawn
         /// </summary>
         public int[] MobIDs { get; private set; }
 
-        public BasicSwarm() : base("foo")
+        public BasicSwarm(int[] mobs) : base("foo")
         {
         }
     }
@@ -97,5 +119,33 @@ namespace SnirkPlugin_Dynamic
         {
             Mob = mob; Count = count; Start = start; RangeX = rangeX; RangeY = rangeY;
         }
+    }
+
+    /// <summary>
+    /// Arguments to start Swarm thread.
+    /// </summary>
+    class SwarmArgs
+    {
+        /// <summary>
+        /// The contents and type of mob swarm to use
+        /// </summary>
+        public MobSwarm Swarm;
+
+        /// <summary>
+        /// How many mobs per wave
+        /// </summary>
+        public int SpawnCount;
+        /// <summary>
+        /// How many waves to spawn
+        /// </summary>
+        public int WaveCount;
+        /// <summary>
+        /// The range of the swarm
+        /// </summary>
+        public int Range;
+        /// <summary>
+        /// The difficulty of the swarm
+        /// </summary>
+        public int Difficulty;
     }
 }

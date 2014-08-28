@@ -395,7 +395,7 @@ namespace SnirkPlugin_Dynamic
             if (!tryY.HasValue) return;
             rangeY = tryY.Value * 2;
             
-            Spawning: // called when everything parseable has been parsed
+        Spawning: // called when everything parseable has been parsed
             TSPlayer.Server.SpawnNPC(monster.type, monster.displayName, amount, 
                 (int)target.GetX()/16, (int)target.GetY()/16, rangeX * 2, rangeY * 2);
             TSPlayer.All.SendSuccessMessage("{0} has been spawned {1} {2} {3} at {4} by {5}! ({6} x {7})",
@@ -412,10 +412,59 @@ namespace SnirkPlugin_Dynamic
             // Smart swarms that learn how difficult they are to beat
 
             // swarp <type|mob> [pointargs] [amount:rand(10-20)] [waves:rand(5-10)] [delay:rand(10-15)]
-            var parser = new CommandParser(com, "Usage: /swarm <mob|type> [point] [wave#] [delay seconds] - see /swarm help.");
+            var parser = new CommandParser(com, "Usage: /swarm <mob|type> [amount] [point] [wave#] [delay seconds] - see /swarm help.");
             if (!parser.AssertParam()) return;
 
-            var mob = 
+            // Get the mob
+            var mob = parser.Parse(true, "mob", TShock.Utils.GetNPCByIdOrName);
+            if (mob == null) return;
+
+            // Initialize variables
+            int waveCount = Main.rand.Next(5, 10), 
+                amount = Main.rand.Next(10, 20), 
+                delay = Main.rand.Next(10, 15);
+            ITarget target = new PlayerTarget(com.Player);
+            if (!parser.Scroll()) goto StartWave;
+
+            // Parse the point
+            var tryPoint = parser.ParseTarget();
+            if (tryPoint == null) return;
+            target = tryPoint.Value;
+            if (!parser.Scroll()) goto StartWave;
+
+            // Parse the amount
+            var tryCount = parser.ParseInt("amount", 0, 100);
+            if (tryCount == null) return;
+            amount = tryCount.Value;
+            if (!parser.Scroll()) goto StartWave;
+
+            // Parse the wave
+            var tryWave = parser.ParseInt("wave", 0, 11);
+            if (tryWave == null) return;
+            waveCount = tryWave.Value;
+            if (!parser.Scroll()) goto StartWave;
+
+            // Parse the delay
+            var tryDelay = parser.ParseInt("delay", 0, 60);
+            if (tryDelay == null) return;
+            delay = tryDelay.Value;
+
+
+        StartWave:
+            (new Thread(ComUtils.Swarm)).Start(
+                new SwarmArgs()
+                {
+                    Difficulty = -1,
+                    Range = 50,
+                    SpawnCount = amount,
+                    WaveCount = waveCount,
+                    Swarm = new BasicSwarm() 
+                    {
+                        MobIDs = new int[] { mob.netID },
+                        Difficulty = -1
+                    }
+                });
+            return;
         }
 
         #endregion
