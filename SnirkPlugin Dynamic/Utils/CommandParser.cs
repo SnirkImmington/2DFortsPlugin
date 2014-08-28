@@ -325,6 +325,5 @@ namespace SnirkPlugin_Dynamic
             Usage = usage;
             this.com = com;
         }
-
     }
 }
