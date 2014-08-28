@@ -33,6 +33,10 @@ namespace SnirkPlugin_Dynamic
         /// The spawn point of the blue team.
         /// </summary>
         public Point SpawnBlue { get; private set; }
+        /// <summary>
+        /// The point in the arena where people go to observe.
+        /// </summary>
+        public Point SpawnObserver { get; private set; }
         
         /// <summary>
         /// The regions composing the red team's tiles.
@@ -42,7 +46,6 @@ namespace SnirkPlugin_Dynamic
         /// The regions composing the blue team's tiles.
         /// </summary>
         public Region[] BlueTiles { get; private set; }
-
         /// <summary>
         /// The regions that are used for observation.
         /// </summary>
