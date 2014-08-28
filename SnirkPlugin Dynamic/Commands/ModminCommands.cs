@@ -369,11 +369,8 @@ namespace SnirkPlugin_Dynamic
 
             if (parser.Scroll())
             {
-                var tryAmount = parser.Parse(false, "Invalid amount!", int.Parse);
+                var tryAmount = parser.ParseInt("mob count", 0, 201); 
                 if (!tryAmount.HasValue) return;
-                if (tryAmount.Value < 0) { com.Player.SendErrorMessage("You can't spawn negative amounts of monsters!"); }
-                if (tryAmount.Value == 0) { com.Player.SendErrorMessage("You can't spawn zero of something..."); return; }
-                if (tryAmount.Value > 200) { com.Player.SendErrorMessage("You can't spawn more than 200 of something!"); return; }
                 amount = tryAmount.Value;
             }
             if (parser.Scroll())
@@ -384,20 +381,15 @@ namespace SnirkPlugin_Dynamic
             }
             if (parser.Scroll())
             {
-                var tryRange = parser.Parse(false, "Invalid range!", int.Parse);
+                var tryRange = parser.ParseInt("range", 0, 201);
                 if (!tryRange.HasValue) return;
-                if (tryRange.Value < 0) { com.Player.SendErrorMessage("You can't spawn mobs over a negative range, dude."); return; }
-                if (tryRange.Value > 200) { com.Player.SendErrorMessage("You can't spawn mobs over a range greater than 200!"); return; }
                 // Set things to * 2 to convert square radius to side
                 rangeX = tryRange.Value * 2; rangeY = tryRange.Value * 2;
             }
             if (parser.Scroll())
             {
-                var tryY = parser.Parse(false, "Invalid range Y!", int.Parse);
+                var tryY = parser.ParseInt("range Y!", 0, 201);
                 if (!tryY.HasValue) return;
-                if (tryY.Value < 0) { com.Player.SendErrorMessage("You can't spawn mobs over a negative Y range, man."); return; }
-                if (tryY.Value > 200) { com.Player.SendErrorMessage("You can't spawn mobs over a range greater than 200!"); return; }
-
                 rangeY = tryY.Value * 2;
             }
 
