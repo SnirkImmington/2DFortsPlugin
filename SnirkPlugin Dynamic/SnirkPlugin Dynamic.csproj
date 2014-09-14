@@ -58,11 +58,13 @@
     <Compile Include="CW\ClassWarfareData.cs" />
     <Compile Include="CW\CWArena.cs" />
     <Compile Include="CW\CWClass.cs" />
+    <Compile Include="CW\Commentary.cs" />
     <Compile Include="CW\CWGame.cs" />
     <Compile Include="CW\CWGameStats.cs" />
     <Compile Include="CW\CWState.cs" />
     <Compile Include="CW\CWTeamData.cs" />
     <Compile Include="CW\GameStatistics.cs" />
+    <Compile Include="Database\CachedAccount.cs" />
     <Compile Include="Database\SwarmData.cs" />
     <Compile Include="Database\UserPoint.cs" />
     <Compile Include="Player Data\2DFPlayer.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Utils\Command Utils.cs" />
     <Compile Include="Utils\CommandParser.cs" />
     <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\GameUtils.cs" />
     <Compile Include="Utils\General Utils.cs" />
     <Compile Include="Utils\Info.cs" />
     <Compile Include="Utils\Logging.cs" />

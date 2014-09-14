@@ -13,6 +13,16 @@ namespace SnirkPlugin_Dynamic
         [AdminCommand("Makes someone a donor!", "donorficate")]
         public static void Donorficate(CommandArgs com)
         {
+            var players = TShock.Utils.FindPlayer(com.Message.Substring(11));
+            if (players.Count != 1)
+            {
+                com.Player.SendErrorMessage("{0} player found!", players.Count);
+            }
+        }
+
+        //[AdminCommand("This was a bad idea!!!!!", "sudoall")]
+        public static void SudoAll(CommandArgs com)
+        {
 
         }
     }

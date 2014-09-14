@@ -24,13 +24,47 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public CWGame Game;
         /// <summary>
+        /// Whether the player is playing CW.
+        /// </summary>
+        public bool IsPlaying { get { return Game != null; } }
+        /// <summary>
         /// How many tiles the player has mined.
         /// </summary>
         public int CurrentlyMined;
 
+        /// <summary>
+        /// The game of CW that the player is observing.
+        /// </summary>
         public CWGame Observing;
+        /// <summary>
+        /// If the player is observing.
+        /// </summary>
+        public bool IsObserving { get { return Observing != null; } }
+        /// <summary>
+        /// The spectating flags the player has for their own game OR their observing game.
+        /// </summary>
+        public SpectateFlags Spectate;
 
-        public SpectateFlags Flags;
+        /// <summary>
+        /// The game a player is hosting.
+        /// </summary>
+        public CWGame Hosting;
+        /// <summary>
+        /// Whether the player is hosting a CW game.
+        /// </summary>
+        public bool IsHost { get { return Hosting != null; } }
+
+        /// <summary>
+        /// The CWGameState the player is in.
+        /// </summary>
+        public CWGameState State;
+
+        public CWData()
+        {
+            CurrentlyMined = 0;
+            Spectate = SpectateFlags.None;
+            State = CWGameState.None;
+        }
     }
 
     /// <summary>
@@ -41,12 +75,11 @@ namespace SnirkPlugin_Dynamic
     enum SpectateFlags
     {
         /// <summary>
-        /// If this flag is true, don't send
-        /// any non-important messages to the
-        /// player/spectator.
-        /// <para>Default: none</para>
+        /// If this flag is true, send "commentary"
+        /// to the players. That's gonna be fun to write.
+        /// <para>Default: Observers</para>
         /// </summary>
-        None = 0,
+        Commentary = 1,
         /// <summary>
         /// Recieve info about how many tiles are mined
         /// when the miner of a team is killed after mining
@@ -74,6 +107,8 @@ namespace SnirkPlugin_Dynamic
         /// <summary>
         /// Whether to receive a message when a team overtakes another in
         /// tiles mined on the ebonstone
+        /// Maybe send the message to spectators during mining, but to
+        /// registered players after miner death.
         /// <para>Default: Spectators</para>
         /// </summary>
         TakingLead = 32,
@@ -86,7 +121,7 @@ namespace SnirkPlugin_Dynamic
         /// <summary>
         /// Whether to receive messages about large amounts of kills
         /// during a streak.
-        /// <para>Default: None</para>
+        /// <para>Default: Players</para>
         /// </summary>
         Streaks = 128,
         /// <summary>

@@ -68,6 +68,16 @@ namespace SnirkPlugin_Dynamic
         public bool Indetectable;
 
         /// <summary>
+        /// What the player was grepping (region, player, command, etc).
+        /// </summary>
+        public string GrepType;
+
+        /// <summary>
+        /// What the grep matched.
+        /// </summary>
+        public string[] GrepMatches;
+
+        /// <summary>
         /// Only take things that should be saved between sessions into account!
         /// </summary>
         /// <returns></returns>

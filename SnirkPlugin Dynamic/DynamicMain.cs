@@ -95,6 +95,36 @@ namespace SnirkPlugin_Dynamic
                 {
                     case CWGameState.PreparingTeams:
                         // Keep track of players in the startup zone
+                        var startingRect = new Rectangle();
+                        foreach (var player in Players)
+                        {
+                            if (player.CW != null)
+                            {
+                                // If they're playing something else ignore
+                                if (player.CW.Game != game) continue;
+
+                                // If they're playing this, we need to check 'em
+                            }
+                            else // They're not playing cw
+                            {
+                                // If they're standing in teh starting rectangle
+                                if (startingRect.Contains(player.TSPlayer.TileX, player.TSPlayer.TileY))
+                                {
+                                    // If they have the right gear
+                                    if (GameUtils.IsCleanChar(player.Player))
+                                    {
+                                        // Move the player to the game
+                                        // Tell the host the player has joined
+                                        // Tell other players who has joined
+                                        // Determine teams
+                                    }
+                                    else // Player has invalid gear
+                                    {
+
+                                    }
+                                }
+                            }
+                        }
                         // Make list of different types and positions
                         // Remove or ignore non-fresh players
                         // Tell host if configurations change
@@ -105,6 +135,7 @@ namespace SnirkPlugin_Dynamic
 
                     case CWGameState.GettingClasses:
                         // Check player for having classes
+                        foreach (var player in game)
                         // Players with classes:
                         // Tell to enable PvP (once outside the choose room)
                         // Check for players in arenas?
@@ -119,6 +150,7 @@ namespace SnirkPlugin_Dynamic
 
                     case CWGameState.CleaningUp:
                         // I dunno how I'm gonna thread doing cleanup
+                        // Probably just make it its own thread or something
                         break;
                 }
             }

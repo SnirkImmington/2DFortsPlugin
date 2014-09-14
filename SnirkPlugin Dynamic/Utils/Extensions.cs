@@ -55,6 +55,26 @@ namespace SnirkPlugin_Dynamic
             return ply.Group.Name.EndsWith("Donor");
         }
 
+        /// <summary>
+        /// Gets all of the possible items in the player's inventory
+        /// </summary>
+        /// <param name="ply">The player to search</param>
+        /// <returns></returns>
+        public static Item[] GetFullInventory(Player ply)
+        {
+            var turn = new List<Item>(50);
+            foreach (var item in ply.inventory)
+                if (item.IsRealItem()) turn.Add(item);
+            foreach (var item in ply.armor)
+                if (item.IsRealItem()) turn.Add(item);
+            return turn.ToArray();
+        }
+
+        public static bool IsRealItem(this Item item)
+        {
+            return item != null && item.netID != 0;
+        }
+
         #endregion
 
         #region General

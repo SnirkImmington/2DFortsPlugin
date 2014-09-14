@@ -25,35 +25,29 @@ namespace SnirkPlugin_Dynamic
                 if (TShock.Players[i] == null || !TShock.Players[i].RealPlayer) continue;
                 TShock.Players[i].Heal();
             }
-            TSPlayer.All.SendSuccessMessage("{0} just healed you!".SFormat(com.Player));
+            TSPlayer.All.SendSuccessMessage("{0} just healed you!", com.Player);
         }
 
-        //[BaseCommand(Permissions.item, "Smart item command needs no quotes! [SmartParams]", "sitem", "si")]
-        public static void Sitem(CommandArgs com)
-        {
-
-        }
-
-        //[BaseCommand(Permissions.slap, "Smart slap command with nice death message! [SmartParams]", "sslap")]
+        [BaseCommand(Permissions.slap, "Smart slap command with nice death message! [SmartParams]", "sslap")]
         public static void SSlap(CommandArgs com)
         {
-            if (com.Parameters.Count == 0)
-            {
-                com.Player.SendErrorMessage("Usage [SmartParams]: /sslap <player> [damage] - [SmartParams] - slaps a player with a nice death message.");
-                return;
-            }
-            var playerData = SmartParams.TSPlayer(com, 0);
-            if (playerData.Value == null)
-            {
-                com.Player.SendErrorMessage("Usage [SmartParams]: /sslap <player> [damage] - slaps a player with a nice death message.");
-                return;
-            }
-            // The classiest default damage value.
-            int damage = 69;
-            if (com.Parameters.Count != 1)
-            {
+            var parser = new CommandParser(com, "/sslap <player> [damage] - (Smart) - slaps a player with a nice death message.");
 
+            var player = parser.ParsePlayer();
+            if (player == null) return;
+
+            // The classiest default damage value
+            int damage = 69;
+            if (parser.Scroll())
+            {
+                var tryDamage = parser.ParseInt("damage", 0);
+                if (tryDamage.HasValue) damage = tryDamage.Value;
             }
+
+            player.Damage(" was slapped.", damage);
+
+            var targetName = player.Index == com.Player.Index ? com.Player.Gender(GenderMode.Self) : player.Name;
+            TSPlayer.All.SendSuccessMessage(ComUtils.SlapDeaths.GetRandom(), com.Player.Name, targetName);
         }
 
         #endregion
@@ -260,7 +254,7 @@ namespace SnirkPlugin_Dynamic
 
         }
 
-        private static string swapUsage = "/swap <player> <player> [SmartParams] - swaps two people's positions!";
+        private static string swapUsage = "/swap <player> <player> (Smart) - swaps two people's positions!";
         [BaseCommand(Permissions.tpallothers, "Swaps two people's positions!", "swap", "swaptp")]
         public static void Swap(CommandArgs com)
         {
@@ -270,34 +264,34 @@ namespace SnirkPlugin_Dynamic
                 return;
             }
 
+            var parser = new CommandParser(com, swapUsage);
+
+            var target1 = parser.ParsePlayer();
+            if (target1 == null) return;
+
+            var target2 = parser.ParsePlayer();
+            if (target2 == null) return;
             
-
-            var plr1 = Parse.FromFirstParams(ref com, TShock.Utils.FindPlayer, swapUsage, "player");
-            if (plr1 == null) return;
-
-            var plr2 = Parse.FromAllParams(com, TShock.Utils.FindPlayer, swapUsage, "player");
-            if (plr2 == null) return;
-
-            if (!plr1.TPAllow && plr1.Index != com.Player.Index)
+            if (!target1.TPAllow && target1.Index != com.Player.Index)
             {
-                com.Player.SendErrorMessage("{0} does not allow you to move {1}!".SFormat(
-                    plr1.Name, plr1.Gender(GenderMode.Them))); return;
+                com.Player.SendErrorMessage("{0} does not allow you to move {1}!",
+                    target1.Name, target1.Gender(GenderMode.Them)); return;
             }
-            if (!plr2.TPAllow && plr2.Index != com.Player.Index)
+            if (!target2.TPAllow && target2.Index != com.Player.Index)
             {
-                com.Player.SendErrorMessage("{0} does not allow you to move {1}!".SFormat(
-                    plr2.Name, plr2.Gender(GenderMode.Them))); return;
+                com.Player.SendErrorMessage("{0} does not allow you to move {1}!",
+                    target2.Name, target2.Gender(GenderMode.Them)); return;
             }
 
-            var onePos = plr1.TPlayer.position;
-            plr1.Teleport(plr2.X, plr2.Y);
-            plr2.Teleport(onePos.X, onePos.Y);
+            var onePos = target1.TPlayer.position;
+            target1.Teleport(target2.X, target2.Y);
+            target2.Teleport(onePos.X, onePos.Y);
 
-            plr1.SendInfoMessage(TeleportString(plr1, plr1, plr2));
-            plr2.SendInfoMessage(TeleportString(plr2, plr1, plr2));
+            target1.SendInfoMessage(TeleportString(target1, target1, target2));
+            target2.SendInfoMessage(TeleportString(target2, target1, target2));
 
-            if (plr1.Index != com.Player.Index && com.Player.Index != plr2.Index)
-                com.Player.SendInfoMessage(TeleportString(com.Player, plr1, plr2));
+            if (target1.Index != com.Player.Index && com.Player.Index != target2.Index)
+                com.Player.SendInfoMessage(TeleportString(com.Player, target1, target2));
         }
 
         private static string TeleportString(TSPlayer teller, TSPlayer p1, TSPlayer p2)
@@ -513,6 +507,33 @@ namespace SnirkPlugin_Dynamic
 
         #region Plugin Info
 
+        [ModCommand("Gets info on Snirk's plugin.", "2dfplugin", "snirkplugin", "snirk", "sp")]
+        public static void PluginInfo(CommandArgs com)
+        {
+            // sp info|version|""|help|commands|new
+            if (com.Parameters.Count == 0 || com.Parameters[0] == "")
+            {
+                com.Player.SendInfoMessage("Dynamic plugin v{0} is active.");
+                com.Player.SendInfoMessage("New in this version: {0}");
+            }
+            switch (com.Parameters[0].ToLower())
+            {
+                case "help":
+                case "info":
+                    return;
+
+                case "new":
+                case "recent":
+                    return;
+
+                case "commands":
+                    return;
+
+                case "version":
+                    return;
+            }
+        }
+
         #endregion
 
         #region General Utils
@@ -526,60 +547,104 @@ namespace SnirkPlugin_Dynamic
             {
                 com.Player.SendInfoMessage("\"grep\" is a Unix command for searching via regular expressions.");
                 com.Player.SendSuccessMessage("If you don't understand any of those words, don't worry and don't bother.");
-                com.Player.SendInfoMessage("Usage: /grep players|warps|regions|wplate <match regex> - matches members of those groups by the match regex");
+                com.Player.SendInfoMessage("Usage: /grep player|warp|region|wplate|item <match regex> - matches members of those groups by the match regex");
                 return;
             }
             com.Player.SendInfoMessage("Creating regular expression...");
+            
             // Create regex option to match.
             var matchEx = new Regex(com.Parameters[1], RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled, new TimeSpan(0, 0, 5));
+            if (matchEx == null)
+            { com.Player.SendErrorMessage("Invalid regular expression! If you don't know what that means, use /search instead."); return; }
+            
             com.Player.SendInfoMessage("Searching...");
-            var turn = new List<string>();
+            var turn = new List<string>(); string type = "";
             switch (com.Parameters[0])
             {
-                case "regions":
+                #region region
                 case "region":
                 case "reg":
+                    type = "region";
                     foreach (var reg in TShock.Regions.ListAllRegions(Main.worldID.ToString()))
                         if (matchEx.IsMatch(reg.Name)) turn.Add(reg.Name);
                     break;
+                #endregion
 
-                case "warps":
+                #region warp
                 case "warp":
+                case "wp":
+                    type = "warp";
                     foreach (var warp in TShock.Warps.Warps)
                         if (matchEx.IsMatch(warp.Name)) turn.Add(warp.Name);
                     break;
+                #endregion
 
-                case "players":
+                #region player
                 case "player":
                 case "online":
                 case "who":
                 case "ply":
                 case "plr":
+                    type = "player";
                     foreach (var player in TShock.Players)
                         if (player != null && player.RealPlayer && matchEx.IsMatch(player.Name))
                             turn.Add(player.Name);
                     break;
+                #endregion
 
+                #region warpplate
                 case "warpplate":
                 case "wplate":
-                    
+                    type = "warpplate";
                     break;
+                #endregion
 
-                case "admins":
-                case "modmins":
+                #region admin
+                case "admin":
+                case "modmin":
                 case "staff":
+                    type = "modmin";
                     foreach (var player in TShock.Players)
                         if (player != null && player.RealPlayer && player.IsStaff() && matchEx.IsMatch(player.Name))
                             turn.Add(player.Name);
                     break;
+                #endregion
+
+                #region command
+                case "command":
+                case "com":
+                    type = "command";
+                    foreach (var command in Commands.ChatCommands)
+                        if (command != null && command.CanRun(com.Player))
+                            foreach (var name in command.Names)
+                            { 
+                                if (matchEx.IsMatch(name))
+                                {
+                                    if (name == command.Name)
+                                        turn.Add('/' + command.Name);
+                                    else turn.Add('/' + command.Name + " (/" + name + ')');
+                                    break;
+                                }
+                            }
+                    break;
+                #endregion
+
+                #region item
+                case "item":
+                case "it":
+                case "i":
+                    type = "item";
+                    break;
+                #endregion
+            
+                default:
+                    com.Player.SendErrorMessage("Invalid type specified!"); return;
             }
-
-        }
-
-        [BaseCommand("Searches for things.", "search")]
-        public static void Search(CommandArgs com)
-        {
-            // /search warp|player|item|region|warpplate
+            if (turn.Count == 0)
+            {
+                com.Player.SendErrorMessage("No {0} found!", ComUtils.Pluralize(0, type)); return;
+            }
+            
         }
 
         #endregion

@@ -57,6 +57,16 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public List<int> Permabuffs;
 
+        /// <summary>
+        /// The type of thing searched.
+        /// </summary>
+        public string SearchType;
+
+        /// <summary>
+        /// The results of the search.
+        /// </summary>
+        public string[] SearchResults;
+
         #endregion
 
         #region Utility
@@ -161,6 +171,14 @@ namespace SnirkPlugin_Dynamic
         }
 
         /// <summary>
+        /// Reverts the player's name.
+        /// </summary>
+        public void RevertName()
+        {
+            Player.name = OldName;
+        }
+
+        /// <summary>
         /// If the specific type of message should be sent.
         /// </summary>
         /// <param name="type"></param>
@@ -212,9 +230,11 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public PlayerData(int index, bool startupAdd)
         {
+            // Save the index.
             Index = index;
 
-            // Get player-persistant data.
+            // Set the rename data.
+            OldName = Player.name;
         }
     }
 }

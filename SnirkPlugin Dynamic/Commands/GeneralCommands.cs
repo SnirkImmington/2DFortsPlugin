@@ -24,7 +24,7 @@ namespace SnirkPlugin_Dynamic
                         ComUtils.Genderize(com.Player.TPlayer.male, GenderMode.Them)), 9001);
         }
 
-        [BaseCommand(Permissions.canchat, "Finds things nearby.", "nearby", "local", "near", "find")]
+        //[BaseCommand(Permissions.canchat, "Finds things nearby.", "nearby", "local", "near", "find")]
         public static void Nearby(CommandArgs com)
         {
             // /nearby <type> [dist] [page]
@@ -167,6 +167,13 @@ namespace SnirkPlugin_Dynamic
                 default:
                     parser.SendUsage(); return;
             }
+        }
+
+        //[BaseCommand(Permissions.canchat, "Searches for different things!", "search")]
+        public static void Search(CommandArgs com)
+        {
+            // search command:com|warp:wp|*warpplate:wplate|player:ply|item|
+            // search <page>
         }
 
         #region Donors only

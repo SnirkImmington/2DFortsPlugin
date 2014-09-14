@@ -7,6 +7,7 @@ using System.Reflection;
 using TerrariaApi.Server;
 using System.Net;
 using System.Runtime.Serialization.Json;
+using TShockAPI;
 
 namespace SnirkPlugin
 {
@@ -22,9 +23,19 @@ namespace SnirkPlugin
         /// </summary>
         private static string SaveURL = ServerApi.ServerPluginsDirectoryPath + @"\DynamicSnirk";
 
+        private DateTime RemoteInstallTime;
+        private bool LoadedFromStart;
+
+        private Assembly DynamicAssembly;
+        private Version DynamicVersion;
 
         public override void Initialize()
         {
+            // Check if plugin is installed
+            Commands.ChatCommands.Add(new Command("2dforts.mod", CoreCommand, "snirkcore") 
+            { 
+                HelpText="This is for Snirk to reload his plugin with.",
+            });
         }
 
         public Version GetLocalVersion()
@@ -35,6 +46,71 @@ namespace SnirkPlugin
         public Version ParseRemoteVersionInfo(string description)
         {
             return null;
+        }
+
+        private static void CoreCommand(CommandArgs com)
+        {
+            // snirkcore detach|attach|reload|check
+            if (com.Parameters.Count == 0 || com.Parameters[0] == "info" || com.Parameters[0] == "help")
+            {
+                com.Player.SendInfoMessage("Currently using Snirk Core v{0}.");
+                com.Player.SendInfoMessage("Remote plugin is {0}, running version {1}.")
+                return;
+            }
+            if (com.Player.UserAccountName != "snirk")
+            {
+                com.Player.SendErrorMessage("You can only see Snirk Plugin Core info with /snirkcore!");
+                return;
+            }
+            switch (com.Parameters[0])
+            {
+                case "detach":
+                case "remove":
+                case "d":
+                    return;
+
+                case "reload":
+                case "refresh":
+                case "r":
+                    return;
+
+                case "attach":
+                case "load":
+                case "a":
+                    return;
+
+                case "update":
+                case "upgrade":
+                case "u":
+                    return;
+
+                case "check":
+                    return;
+
+                default:
+                    com.Player.SendErrorMessage("Invalid subcommand!");
+                    return;
+            }
+        }
+
+        private static string CheckNewDownload()
+        {
+
+        }
+
+        private static void LoadDynamic()
+        {
+
+        }
+
+        private static void DetachDynamic()
+        {
+
+        }
+
+        private static void DeleteDynamic()
+        {
+
         }
 
         public bool DownloadRemotePlugin()
@@ -80,7 +156,7 @@ namespace SnirkPlugin
             Version currReleaseVersion = new Version(0,0);
             ReleaseInfo currentRelease = null;
 
-            // Loop through the releases
+            // Loop through the releases, get smallest one.
             foreach (var release in releases.Releases)
             {
                 var releaseVersion = ParseRemoteVersionInfo(release.Description);
@@ -90,7 +166,12 @@ namespace SnirkPlugin
                     currentRelease = release;
                     currReleaseVersion = releaseVersion;
                 }
-                
+            }
+
+            // 1.5 Check versioning
+            if (currReleaseVersion == currVersion)
+            {
+                return true; // Versioning is the same?
             }
 
             // 2. Download the data
@@ -113,5 +194,6 @@ namespace SnirkPlugin
             Console.WriteLine(text, format);
             Console.ForegroundColor = current;
         }
+   
     }
 }

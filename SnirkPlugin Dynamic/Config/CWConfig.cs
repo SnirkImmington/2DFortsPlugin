@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria;
 using TShockAPI.DB;
 
 namespace SnirkPlugin_Dynamic
@@ -43,8 +44,38 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public static void ReloadClasses()
         {
+            // TODO get values.
+            var chests = GetCWChests(0, 0, 0, 0);
+            foreach (var chest in chests)
+            {
+
+            }
+        }
+
+        private static IEnumerable<Chest> GetCWChests(int startX, int startY, int rangeX, int rangeY)
+        {
+            var rect = new Rectangle(startX, startY, rangeX, rangeY);
+
+            for (int i = 0; i < Main.chest.Length; i++)
+            {
+                if (rect.Contains(Main.chest[i].x, Main.chest[i].y))
+                    yield return Main.chest[i];
+            }
+        }
+
+        private static List<Sign> GetCWSigns(int startx, int starty, int rangex, int rangey)
+        {
 
         }
+
+        private static Chest GetChest(int x, int y)
+        {
+            foreach (var chest in Main.chest)
+                if (chest != null && chest.x == x && chest.y == y)
+                    return chest;
+            return null;
+        }
+
         // Constants for CW arena //
 
         /// <summary>

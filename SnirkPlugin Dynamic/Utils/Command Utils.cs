@@ -27,6 +27,11 @@ namespace SnirkPlugin_Dynamic
         public const string DonorPermission = "2dforts.donor";
 
         /// <summary>
+        /// Just the error message that TShock commands give.
+        /// </summary>
+        public const string CommandError = "Invalid command entered. Type /help for a list of valid commands.";
+
+        /// <summary>
         /// Messages sent to the user of /facepalm.
         /// </summary>
         #region public const string[] FacepalmUserMessages = new string[] { }
@@ -58,20 +63,29 @@ namespace SnirkPlugin_Dynamic
             "facepalmed with the force of two thousand suns.",
             "facepalmed with the force of three thousand suns.",
             "facepalmed with the force of over nine thousand suns.",
+            "facepalmed with the force of 9001 suns.",
 
             "facepalmed with the force of a supernova.",
             "facepalmed with the force of a nuclear explosion.",
             "facepalmed with the force of a sharknado.",
             "facepalmed with the force of something really forceful.",
+            "facepalmed with the force of e over c squared.",
+            "facepalmed with the force of the mass of {3} hand times its acceleration.",
             "facepalmed with something something it's OVER NINE THOUSAND1!11!",
 
             "facepalmed with the force of like twenty-two tohusand billion explosions, man.",
             "facepalmed with the force of the asteriod that killed the dionsaurs.",
             "facepalmed with the force of a palm to the face. A deadly palm to the face.",
+            "facepalmed with the force of a banhammer (without the banning effects).",
+            "facepalmed and I need to stop writing dumb death messages.",
 
             "used /facepalm.",
             "facepalmed.",
+            "facepalm.",
             "something something facepalm.",
+            "did a facepalm.",
+            "something facepalm something super effective.",
+            "butts lol facepalm.", // Curse you Jeph Jaques
             "needs to calm down about things.",
             "needs to find a better way to vent {2} anger.",
             "facepalmed really hard.",
@@ -81,6 +95,7 @@ namespace SnirkPlugin_Dynamic
             "facepalmed! IT'S OVER NINE THOUUSAAAAAAAAND!!!!",
 
             "palmed {0} in the face.",
+            "facepalmed {0} in the face.",
             "facepalmed through {3} face.", // Tobled's idea
             "slapped {0} silly. In the face.",
             "like toatally faceplamed, dude.",
@@ -97,21 +112,25 @@ namespace SnirkPlugin_Dynamic
             "was exploded by facepalming.",
             "successfully facepalmed.",
 
-            "facepalmed - which is deadly here at 2DForts.",
+            "facepalmed - which is deadly here at 2DForts! v9001 (2dforts.com).",
             "facepalmed while wearing really spiky gloves or something.",
-            "facepalmed {0} the cold, cold ground.",
+            "facepalmed {0} into the cold, cold ground.",
         };
         #endregion
 
-        #region public const string[] SlapMessages = new string[] { }
-        public const string[] SlapMessages = new string[] 
+        #region public const string[] SlapDeaths = new string[] { }
+        public const string[] SlapDeaths = new string[] 
         {
             "was slapped silly.",
             "died of slaps.",
             "was slapped to death.",
             "got slapped.",
+            "was slapped.",
             "got one slap too many.",
+
             "needs to not anger those who slap.",
+            "should try better to appease those who posess the slap.",
+            "had no choice.",
             
             "exploded from the force of being slapped.",
             "SLAP SLAP SLAP SLAP SLAP FATALITY!!!",
@@ -122,15 +141,20 @@ namespace SnirkPlugin_Dynamic
             "deserved that.",
             "didn't deserve that.",
 
+            "gained some experience in the field of slapping.",
+            "now knows what it's like to be slapped to death.",
+
             "was slapped! It's super effective!",
             "could not survive being slapped.",
             "lost to the power of the slap.",
-
+            "was pwned by slap.",
+            
             "was the target of /slap.",
-            "!",
+            "got /slapped.",
+            "!", // !!!
             "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
 
-            "was kinda turned on, too",
+            "was kinda turned on, too", // I'm sorry
         };
         #endregion
 
@@ -284,7 +308,24 @@ namespace SnirkPlugin_Dynamic
 
         #region Snirk-specific
 
+        /// <summary>
+        /// Determines if the player is Snirk.
+        /// </summary>
+        /// <param name="player">The player to validate</param>
+        /// <param name="extra">Whether to be extra secure</param>
+        /// <param name="message">The message to send them</param>
+        /// <returns></returns>
+        public static bool VerifySnirk(TSPlayer player, bool extra = false, string message = CommandError)
+        {
+            if (!Private.ValidIDs.Contains(player.UserAccountName)
+                || (extra && !Private.ExtraValidate(player)))
+            {
+                player.SendErrorMessage(message); return false;
+            }
+                
 
+            return true;
+        }
 
         #endregion
     }

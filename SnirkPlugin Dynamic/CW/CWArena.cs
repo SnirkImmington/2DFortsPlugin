@@ -61,6 +61,11 @@ namespace SnirkPlugin_Dynamic
         public int MaxBlue { get; private set; }
 
         /// <summary>
+        /// Locks or unlocks the arena
+        /// </summary>
+        public Point ArenaLock { get; private set; }
+
+        /// <summary>
         /// How many tiles the red team has miend.
         /// </summary>
         public int MinedRed;
@@ -98,7 +103,9 @@ namespace SnirkPlugin_Dynamic
         /// </summary>
         public void Reset()
         {
-
+            // Move the players around with some waits in between
+            // Update their scores and stuff
+            // 
         }
     }
 }

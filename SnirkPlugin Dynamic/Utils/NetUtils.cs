@@ -12,7 +12,7 @@ namespace SnirkPlugin_Dynamic
     class NetUtils
     {
         /// <summary>
-d        /// The base URL for Pastebin's API
+        /// The base URL for Pastebin's API
         /// </summary>
         private const string PastebinURL = "http://pastebin.com/api/api_post.php";
         /// <summary>

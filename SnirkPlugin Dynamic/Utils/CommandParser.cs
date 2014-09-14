@@ -41,39 +41,61 @@ namespace SnirkPlugin_Dynamic
         /// for example a list of players from part of a name.</param>
         /// <returns>A parsed T or null.</returns>
         /// <example>Parse(true, "item", TShock.Utils.GetItemByIdOrName)</example>
-        public T Parse<T>(bool smart, string type, Func<string, List<T>> finder) where T : class
+        public T Parse<T>(bool smart, string type, Func<string, List<T>> finder, Converter<T, string> converter) where T : class
         {
             var text = "";
-
+            List<T> result = null;
             do
             {
+                // Try to get the param.
                 var param = PopParameter();
+                // If it's null, we've either run out of params or never got one in the first place
                 if (param == "")
                 {
-                    if (text == "") SendUsage();
-                    else com.Player.SendErrorMessage("No {0} found!", ComUtils.Pluralize(0, type));
+                    // If this was at the beginning of the method anyway we were expecting a param
+                    if (text == "" || result == null) SendUsage();
+                    else
+                    {
+                        // Properly handle running out of params mid-parsing.
+                        if (result.Count == 0) com.Player.SendErrorMessage("No {0} found!", ComUtils.Pluralize(0, type));
+                        else SendPageList(type, result.ConvertAll(converter));
+                    }
                     return null;
                 }
                 if (text == "") text += param;
                 else text += " " + param;
 
-                // Parse the current text.
-                // Note the lack of try block - 
-                // methods used here should not
-                // throw exceptions.
-                var result = finder(text);
+                // Parse the current text. Note the lack of try block - 
+                // methods used here should not throw exceptions.
+                result = finder(text);
 
+                // Return if one is found.
                 if (result.Count == 1) return result[0];
+
+                else if (result.Count == 0)
+                {
+                    com.Player.SendErrorMessage("No {0} found!", ComUtils.Pluralize(0, type));
+                }
 
                 // not one returned and can't continue.
                 else if (!smart) 
                 {
-                    com.Player.SendErrorMessage("{0} {1} matched!", result.Count, ComUtils.Pluralize(result.Count, type));
+                    SendPageList(type, result.ConvertAll(converter));
                     return null;
                 }
             }
             while (smart);
+            // All handling of parameters is done properly
             return null;
+        }
+
+        private void SendPageList(string type, List<string> results)
+        {
+            PaginationTools.SendPage(com.Player, 1, results, new PaginationTools.Settings()
+                {
+                    HeaderFormat = results.Count + ' ' + ComUtils.Pluralize(2, type) + " found - {0} page(s):",
+                    IncludeFooter = false, HeaderTextColor = Color.Red,
+                });
         }
 
         /// <summary>
@@ -142,7 +164,7 @@ namespace SnirkPlugin_Dynamic
         /// <returns>A parsed player or null if none was found.</returns>
         public TSPlayer ParsePlayer(bool smart = true)
         {
-            return Parse(smart, "player", TShock.Utils.FindPlayer);
+            return Parse(smart, "player", TShock.Utils.FindPlayer, p => p.Name);
         }
 
         /// <summary>
