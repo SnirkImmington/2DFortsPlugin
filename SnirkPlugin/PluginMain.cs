@@ -21,13 +21,29 @@ namespace SnirkPlugin
         /// <summary>
         /// URI to save the plugin at.
         /// </summary>
-        private static string SaveURL = ServerApi.ServerPluginsDirectoryPath + @"\DynamicSnirk";
+        private static readonly string SaveURL = ServerApi.ServerPluginsDirectoryPath + @"\DynamicSnirk";
 
-        private DateTime RemoteInstallTime;
-        private bool LoadedFromStart;
+        /// <summary>
+        /// The last time the remote plugin was installed.
+        /// </summary>
+        private static DateTime RemoteInstallTime;
+        /// <summary>
+        /// Whether the remote plugin was loaded from the start.
+        /// </summary>
+        private static bool LoadedFromStart;
 
-        private Assembly DynamicAssembly;
-        private Version DynamicVersion;
+        /// <summary>
+        /// The Assembly for the remote plugin
+        /// </summary>
+        private static Assembly DynamicAssembly;
+        /// <summary>
+        /// The version info of the dynamic assembly.
+        /// </summary>
+        private static Version DynamicVersion { get { return DynamicAssembly.GetName().Version; } }
+        /// <summary>
+        /// Any exception caused by loading the assembly.
+        /// </summary>
+        private static Exception DynamicException;
 
         public override void Initialize()
         {
@@ -38,28 +54,22 @@ namespace SnirkPlugin
             });
         }
 
-        public Version GetLocalVersion()
-        {
-            return null;
-        }
-
-        public Version ParseRemoteVersionInfo(string description)
-        {
-            return null;
-        }
-
         private static void CoreCommand(CommandArgs com)
         {
             // snirkcore detach|attach|reload|check
-            if (com.Parameters.Count == 0 || com.Parameters[0] == "info" || com.Parameters[0] == "help")
+            if (com.Parameters.Count == 0 || com.Parameters[0] == "info")
             {
                 com.Player.SendInfoMessage("Currently using Snirk Core v{0}.");
-                com.Player.SendInfoMessage("Remote plugin is {0}, running version {1}.")
+                if (DynamicAssembly != null)
+                    com.Player.SendInfoMessage("Dynamic plugin is installed (from {0} by {1}), running version {2}.",
+                        RemoteInstallTime.AddHours(14).ToShortTimeString(), LoadedFromStart ? "start" : "command", DynamicVersion);
+                else com.Player.SendWarningMessage("Dynamic plugin is not installed - {0}.", 
+                    DynamicException == null ? "no exception data" : DynamicException.Message);
                 return;
             }
-            if (com.Player.UserAccountName != "snirk")
+            if (!)
             {
-                com.Player.SendErrorMessage("You can only see Snirk Plugin Core info with /snirkcore!");
+                com.Player.SendErrorMessage("You can only see Snirk Plugin Core info with /snirkcore [info]!");
                 return;
             }
             switch (com.Parameters[0])
@@ -195,5 +205,6 @@ namespace SnirkPlugin
             Console.ForegroundColor = current;
         }
    
+
     }
 }

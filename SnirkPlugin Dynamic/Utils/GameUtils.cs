@@ -63,15 +63,19 @@ namespace SnirkPlugin_Dynamic
 
             // Get the items the player has from the inventory
             var items = ply.inventory.Where(it => it != null && it.netID != 0 && it.netID != WaterCamdle.netID);
+            
+            // First, check the health
+            var health = GetRepHealth(ply);
+            var mana = GetRepMana(ply);
 
             // Check each class
             foreach (var cwclass in CWConfig.Classes)
             {
-                // First, check the health
-                var health = GetRepHealth(ply);
-                var mana = GetRepMana(ply);
+                // If it's greater than, ignore, if less than just wait for player
+                // to finish with the chest.
+                if (cwclass.MaxHealth != health || cwclass.MaxMana != mana) continue;
 
-                if ()
+
             }
         }
     }
